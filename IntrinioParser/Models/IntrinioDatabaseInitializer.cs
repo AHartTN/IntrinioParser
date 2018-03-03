@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IntrinioParser.Models
 {
-	public sealed class IntrinioDatabaseInitializer
+	internal sealed class IntrinioDatabaseInitializer
 	{
-		public static void Initialize(DbContext context)
+		internal static void Initialize(DbContext context)
 		{
 			context.Database.EnsureCreated();
 		}

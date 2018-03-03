@@ -42,4 +42,9 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\Mapping\Many\Base\" />
+    <Folder Include="Interfaces\Mapping\Single\Base\" />
+  </ItemGroup>
+
 </Project>

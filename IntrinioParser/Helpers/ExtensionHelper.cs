@@ -11,12 +11,15 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using IntrinioParser.Attributes;
+using IntrinioParser.Classes;
+using IntrinioParser.Classes.Abstract.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntrinioParser.Helpers
 {
-	public static class ExtensionHelper
+	internal static class ExtensionHelper
 	{
-		public static string BuildQueryString(this Dictionary<string, string> arguments)
+		internal static string BuildQueryString(this Dictionary<string, string> arguments)
 		{
 			if (arguments == null || !arguments.Any())
 				return null;
@@ -24,16 +27,16 @@ namespace IntrinioParser.Helpers
 			string queryString = "?";
 
 			IReadOnlyCollection<string> argStrings = (from argument in arguments
-				let key = HttpUtility.UrlEncode(argument.Key)
-				let value = HttpUtility.UrlEncode(argument.Value)
-				select $"{key}={value}").ToArray();
+													  let key = HttpUtility.UrlEncode(argument.Key)
+													  let value = HttpUtility.UrlEncode(argument.Value)
+													  select $"{key}={value}").ToArray();
 
 			queryString = queryString + string.Join("&", argStrings);
 
 			return queryString;
 		}
 
-		public static string Hash(this string source)
+		internal static string Hash(this string source)
 		{
 			using (MD5 md5 = MD5.Create())
 			{
@@ -54,7 +57,7 @@ namespace IntrinioParser.Helpers
 			}
 		}
 
-		public static FileInfo GetFile(this string path)
+		internal static FileInfo GetFile(this string path)
 		{
 			if (string.IsNullOrWhiteSpace(path))
 				throw new ArgumentNullException(nameof(path),
@@ -81,7 +84,7 @@ namespace IntrinioParser.Helpers
 			return fileInfo;
 		}
 
-		public static FileInfo WriteFile(this string filePath, string contents)
+		internal static FileInfo WriteFile(this string filePath, string contents)
 		{
 			FileInfo fileInfo = filePath.GetFile();
 
@@ -89,7 +92,7 @@ namespace IntrinioParser.Helpers
 			return fileInfo;
 		}
 
-		public static DataTable CreateDataTable<T>(IEnumerable<T> entities)
+		internal static DataTable CreateDataTable<T>(IEnumerable<T> entities)
 		{
 			try
 			{
@@ -103,8 +106,8 @@ namespace IntrinioParser.Helpers
 					Type propertyType = property.PropertyType;
 
 					if (propertyType.IsGenericType
-					    &&
-					    propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+						&&
+						propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
 						propertyType = Nullable.GetUnderlyingType(propertyType);
 
 					table.Columns.Add(new DataColumn(property.Name, propertyType));
@@ -132,9 +135,7 @@ namespace IntrinioParser.Helpers
 			if (Attribute.GetCustomAttribute(p, typeof(HiddenAttribute)) is HiddenAttribute hiddenAttribute)
 				return !hiddenAttribute.IsHidden;
 
-			AssociationAttribute associationAttribute = Attribute.GetCustomAttribute(p, typeof(AssociationAttribute)) as AssociationAttribute;
-
-			if (associationAttribute != null)
+			if (Attribute.GetCustomAttribute(p, typeof(AssociationAttribute)) is AssociationAttribute associationAttribute)
 				return associationAttribute.IsForeignKey == false;
 
 			return true;
@@ -145,7 +146,7 @@ namespace IntrinioParser.Helpers
 			return o ?? DBNull.Value;
 		}
 
-		public static void SqlBulkCopy_SqlRowsCopied(object sender, SqlRowsCopiedEventArgs e)
+		internal static void SqlBulkCopy_SqlRowsCopied(object sender, SqlRowsCopiedEventArgs e)
 		{
 			SqlBulkCopy sbc = sender as SqlBulkCopy;
 
@@ -156,7 +157,7 @@ namespace IntrinioParser.Helpers
 				$"\r{e.RowsCopied} Rows Copied to the '{sbc.DestinationTableName}' table | Abort: {e.Abort} | Streaming: {sbc.EnableStreaming}\t\t\t\t\t\t");
 		}
 
-		public static DataTable AsDataTable<T>(this IEnumerable<T> data)
+		internal static DataTable AsDataTable<T>(this IEnumerable<T> data)
 		{
 			Type t = typeof(T);
 
@@ -168,8 +169,8 @@ namespace IntrinioParser.Helpers
 				Type propertyType = property.PropertyType;
 
 				if (propertyType.IsGenericType
-				    &&
-				    propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+					&&
+					propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
 					propertyType = Nullable.GetUnderlyingType(propertyType);
 
 				table.Columns.Add(new DataColumn(property.Name, propertyType));
@@ -183,9 +184,10 @@ namespace IntrinioParser.Helpers
 			return table;
 		}
 
-		public static bool WriteToDatabase<T>(this IEnumerable<T> data, string tableName, SqlConnection conn,
-			SqlBulkCopyOptions options)
+		internal static bool WriteToDatabase<T>(this IEnumerable<T> data, SqlConnection conn, SqlBulkCopyOptions options) where T : BaseAbstract
 		{
+			T instance = Activator.CreateInstance<T>();
+
 			if (conn.State != ConnectionState.Open)
 				conn.Open();
 
@@ -193,8 +195,7 @@ namespace IntrinioParser.Helpers
 
 			using (SqlBulkCopy sbc = new SqlBulkCopy(conn, options, transaction))
 			{
-				sbc.BatchSize = 10000;
-				sbc.DestinationTableName = $"{tableName}";
+				sbc.DestinationTableName = $"{instance.FullTableName}";
 				try
 				{
 					DataTable dataTable = data.AsDataTable();
@@ -221,7 +222,7 @@ namespace IntrinioParser.Helpers
 			return true;
 		}
 
-		public static bool IsNullOrWhiteSpace(this string source)
+		internal static bool IsNullOrWhiteSpace(this string source)
 		{
 			return string.IsNullOrWhiteSpace(source);
 		}
@@ -232,7 +233,7 @@ namespace IntrinioParser.Helpers
 		/// <param name="source">The source string to check against</param>
 		/// <param name="replacement">The replacement string should the check come back true</param>
 		/// <returns>The replacement string if true, otherwise the source string</returns>
-		public static string IfNullOrWhiteSpace(this string source, string replacement)
+		internal static string IfNullOrWhiteSpace(this string source, string replacement)
 		{
 			if (string.IsNullOrWhiteSpace(source))
 				return replacement;
@@ -247,7 +248,7 @@ namespace IntrinioParser.Helpers
 		/// <param name="replacement">The replacement string should the check come back true</param>
 		/// <param name="input">The values to compare the source string against</param>
 		/// <returns>The replacement string if the source string equals any of the input strings, otherwise the source string</returns>
-		public static string IfEquals(this string source, string[] input, string replacement)
+		internal static string IfEquals(this string source, string[] input, string replacement)
 		{
 			if (input.Any(a => a.Equals(source)))
 				return replacement;
@@ -260,7 +261,7 @@ namespace IntrinioParser.Helpers
 		/// </summary>
 		/// <param name="source">The source string containing the number</param>
 		/// <returns>An integer representing the source string</returns>
-		public static int? ToNullableInt(this string source)
+		internal static int? ToNullableInt(this string source)
 		{
 			int? result;
 			if (string.IsNullOrWhiteSpace(source))
@@ -284,7 +285,7 @@ namespace IntrinioParser.Helpers
 		/// </summary>
 		/// <param name="source">The source string containing the number</param>
 		/// <returns>An decimaleger representing the source string</returns>
-		public static decimal? ToNullableDecimal(this string source)
+		internal static decimal? ToNullableDecimal(this string source)
 		{
 			decimal? result;
 			if (string.IsNullOrWhiteSpace(source))

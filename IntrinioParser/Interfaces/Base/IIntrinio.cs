@@ -2,7 +2,7 @@
 
 namespace IntrinioParser.Interfaces.Base
 {
-	public interface IIntrinio
+	public interface IIntrinio : IBaseModel
 	{
 		DataType DataType { get; }
 		FileType FileType { get; }

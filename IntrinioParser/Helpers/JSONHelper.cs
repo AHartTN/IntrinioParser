@@ -7,16 +7,16 @@ using Newtonsoft.Json.Linq;
 
 namespace IntrinioParser.Helpers
 {
-	public static class JsonHelper
+	internal static class JsonHelper
 	{
 		static JsonHelper()
 		{
 			GlobalSchemas = new Dictionary<string, Dictionary<string, object>>();
 		}
 
-		public static Dictionary<string, Dictionary<string, object>> GlobalSchemas { get; set; }
+		internal static Dictionary<string, Dictionary<string, object>> GlobalSchemas { get; set; }
 
-		public static object ProcessJsonSchema(string response)
+		internal static object ProcessJsonSchema(string response)
 		{
 			if (response.IsNullOrWhiteSpace())
 				return null;
@@ -208,7 +208,7 @@ namespace IntrinioParser.Helpers
 			}
 		}
 
-		public static string OutputGlobalSchema()
+		internal static string OutputGlobalSchema()
 		{
 			if (GlobalSchemas == null || !GlobalSchemas.Any())
 				return null;
@@ -216,7 +216,7 @@ namespace IntrinioParser.Helpers
 			string output = "";
 			foreach (KeyValuePair<string, Dictionary<string, object>> schema in GlobalSchemas)
 			{
-				output += string.Format("public class {0}\r\n{{", schema.Key);
+				output += string.Format("internal sealed class {0}\r\n{{", schema.Key);
 				IOrderedEnumerable<KeyValuePair<string, object>> schemaValue = schema.Value
 					.OrderBy(o => o.Value.ToString().StartsWith("Collection"))
 					.ThenBy(t => t.Value.ToString())

@@ -6,19 +6,19 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
 using CsvHelper;
 using IntrinioParser.Classes;
+using IntrinioParser.Classes.Abstract.Base;
 using IntrinioParser.Enumerators;
+using IntrinioParser.Mapping.CSV.Detail;
+using IntrinioParser.Mapping.CSV.Master;
 using IntrinioParser.Models;
-using IntrinioParser.Models.Abstract;
-using IntrinioParser.Models.Mapping.CSV;
 using IntrinioParser.Properties;
 using Newtonsoft.Json;
 
 namespace IntrinioParser.Helpers
 {
-	public class IntrinioHelper
+	internal sealed class IntrinioHelper
 	{
 		public const string BaseURL = @"http://api.intrinio.com/";
 		public const string CompanyRoute = "companies";
@@ -45,7 +45,6 @@ namespace IntrinioParser.Helpers
 		private byte[] AuthStringBytes => Encoding.GetEncoding("ISO-8859-1").GetBytes(RawAuthString);
 		private string AuthString => $"Basic {Convert.ToBase64String(AuthStringBytes)}";
 		private IntrinioDatabase DB { get; }
-		private CsvReader CSV { get; set; }
 
 		private void Initialize()
 		{
@@ -55,9 +54,16 @@ namespace IntrinioParser.Helpers
 		private void RegisterCSVClassMaps(CsvReader reader)
 		{
 			reader?.Configuration.RegisterClassMap(new CompanyMasterCSVMap());
-			reader?.Configuration.RegisterClassMap(new CompanyCSVMap());
 			reader?.Configuration.RegisterClassMap(new SecurityMasterCSVMap());
 			reader?.Configuration.RegisterClassMap(new IndexMasterCSVMap());
+			reader?.Configuration.RegisterClassMap(new OwnerMasterCSVMap());
+			reader?.Configuration.RegisterClassMap(new StockExchangeMasterCSVMap());
+
+			reader?.Configuration.RegisterClassMap(new CompanyCSVMap());
+			reader?.Configuration.RegisterClassMap(new SecurityCSVMap());
+			reader?.Configuration.RegisterClassMap(new IndexCSVMap());
+			//reader?.Configuration.RegisterClassMap(new OwnerCSVMap());
+			//reader?.Configuration.RegisterClassMap(new StockExchangeCSVMap());
 		}
 
 		private CsvReader GetCSVReader(TextReader stream)
@@ -67,28 +73,27 @@ namespace IntrinioParser.Helpers
 			return reader;
 		}
 
-		private string GetTableName<T>() where T : class
+		private string GetTableName<T>() where T : IntrinioAbstract
 		{
 			T instance = Activator.CreateInstance<T>();
-			BaseAbstract baseModel = instance as BaseAbstract;
 
-			if (baseModel == null)
-				throw new TypeLoadException($"Unable to retrieve information for {typeof(T)} as it does not appear to be an Intrinio related object.");
-
-			return baseModel.FullTableName;
-		}
-
-		private string BuildURL<T>(Dictionary<string, string> arguments = null) where T : class
-		{
-			T instance = Activator.CreateInstance<T>();
-			IntrinioAbstract intrinioModel = instance as IntrinioAbstract;
-
-			if (intrinioModel == null)
+			if (instance == null)
 				throw new TypeLoadException(
 					$"Unable to retrieve information for {typeof(T)} as it does not appear to be an Intrinio related object.");
 
-			DataType dataType = intrinioModel.DataType;
-			FileType fileType = intrinioModel.FileType;
+			return instance.FullTableName;
+		}
+
+		private string BuildURL<T>(Dictionary<string, string> arguments = null) where T : IntrinioAbstract
+		{
+			T instance = Activator.CreateInstance<T>();
+
+			if (instance == null)
+				throw new TypeLoadException(
+					$"Unable to retrieve information for {typeof(T)} as it does not appear to be an Intrinio related object.");
+
+			DataType dataType = instance.DataType;
+			FileType fileType = instance.FileType;
 
 			string route;
 
@@ -106,7 +111,7 @@ namespace IntrinioParser.Helpers
 				case DataType.Owner:
 					route = OwnerRoute;
 					break;
-				case DataType.Exchange:
+				case DataType.StockExchange:
 					route = ExchangeRoute;
 					break;
 				default:
@@ -131,16 +136,15 @@ namespace IntrinioParser.Helpers
 			return url;
 		}
 
-		private string BuildFilePath<T>(Dictionary<string, string> arguments = null) where T : class
+		private string BuildFilePath<T>(Dictionary<string, string> arguments = null) where T : IntrinioAbstract
 		{
 			T instance = Activator.CreateInstance<T>();
-			IntrinioAbstract intrinioModel = instance as IntrinioAbstract;
 
-			if (intrinioModel == null)
+			if (instance == null)
 				throw new TypeLoadException(
 					$"Unable to retrieve information for {typeof(T)} as it does not appear to be an Intrinio related object.");
 
-			FileType fileType = intrinioModel.FileType;
+			FileType fileType = instance.FileType;
 			string hash = $"{typeof(T).FullName}{arguments.BuildQueryString()}".Hash();
 			string filePath = Path.Combine(WorkingDirectory, $"{hash}");
 
@@ -159,38 +163,38 @@ namespace IntrinioParser.Helpers
 			return filePath;
 		}
 
-		private HttpWebRequest BuildRequest<T>(Dictionary<string, string> arguments = null) where T : class
+		private HttpWebRequest BuildRequest<T>(Dictionary<string, string> arguments = null) where T : IntrinioAbstract
 		{
 			string url = BuildURL<T>(arguments);
 			Console.WriteLine(url);
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+			HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
 			request.Timeout = 60000;
 			request.Headers.Add("Authorization", AuthString);
 
 			return request;
 		}
 
-		private IReadOnlyCollection<T> ProcessResponse<T>(Dictionary<string, string> arguments = null) where T : class
+		private IReadOnlyCollection<T> ProcessResponse<T>(Dictionary<string, string> arguments = null)
+			where T : IntrinioAbstract
 		{
 			T instance = Activator.CreateInstance<T>();
-			IntrinioAbstract intrinioModel = instance as IntrinioAbstract;
 
-			if (intrinioModel == null)
+			if (instance == null)
 				throw new TypeLoadException(
 					$"Unable to retrieve information for {typeof(T)} as it does not appear to be an Intrinio related object.");
 
 			if (arguments == null)
 				arguments = new Dictionary<string, string>();
 
-			FileType fileType = intrinioModel.FileType;
+			FileType fileType = instance.FileType;
 
 			HttpWebRequest request = BuildRequest<T>(arguments);
 
 			List<T> records = new List<T>();
 			int currentPage = 1;
 			int totalPages = 1;
-			
-			using (HttpWebResponse initialResponse = (HttpWebResponse)request.GetResponse())
+
+			using (HttpWebResponse initialResponse = (HttpWebResponse) request.GetResponse())
 			{
 				using (Stream responseStream = initialResponse.GetResponseStream())
 				{
@@ -200,6 +204,8 @@ namespace IntrinioParser.Helpers
 
 					using (StreamReader stream = new StreamReader(responseStream))
 					{
+						// ISSUE: An error gets thrown when we first try to get the response... request.GetResponse() has error handling and throws an exception with the message/code.
+						// TODO: Refactor this to better handle exceptions
 						switch (initialResponse.StatusCode)
 						{
 							case HttpStatusCode.OK: // You greedy bastard
@@ -238,7 +244,7 @@ namespace IntrinioParser.Helpers
 							case HttpStatusCode.NotFound: // Invalid path
 							case HttpStatusCode.InternalServerError: // Server Error
 							case HttpStatusCode.ServiceUnavailable: // Service Interruption or limit reached
-							case (HttpStatusCode)429: // Too many calls
+							case (HttpStatusCode) 429: // Too many calls
 								string errorResponse = stream.ReadToEnd();
 								throw new Exception(errorResponse);
 							default:
@@ -248,7 +254,7 @@ namespace IntrinioParser.Helpers
 					}
 				}
 			}
-			
+
 			if (currentPage < totalPages)
 			{
 				currentPage++;
@@ -266,7 +272,7 @@ namespace IntrinioParser.Helpers
 			return records;
 		}
 
-		private IReadOnlyCollection<T> ProcessCSVResponse<T>(StreamReader stream) where T : class
+		private IReadOnlyCollection<T> ProcessCSVResponse<T>(StreamReader stream) where T : IntrinioAbstract
 		{
 			if (stream == null || stream.Peek() == -1)
 				return null;
@@ -279,10 +285,10 @@ namespace IntrinioParser.Helpers
 			return records;
 		}
 
-		private JsonResponse<T> ProcessJSONResponse<T>(StreamReader stream) where T : class
+		private JsonResponse<T> ProcessJSONResponse<T>(StreamReader stream) where T : IntrinioAbstract
 		{
 			string jsonString = stream.ReadToEnd();
-			Console.WriteLine(jsonString);
+			//Console.WriteLine(jsonString);
 			JsonResponse<T> result = JsonConvert.DeserializeObject<JsonResponse<T>>(jsonString);
 
 			if (result?.Data != null)
@@ -296,13 +302,13 @@ namespace IntrinioParser.Helpers
 				CurrentPage = 1,
 				TotalPages = 1,
 				APICallCredits = 1,
-				Data = new[] { record },
+				Data = new[] {record}
 			};
 
 			return result;
 		}
 
-		public IReadOnlyCollection<T> Get<T>(Dictionary<string, string> arguments = null) where T : class
+		public IReadOnlyCollection<T> Get<T>(Dictionary<string, string> arguments = null) where T : IntrinioAbstract
 		{
 			bool updateSQL = false;
 			bool updateFile = false;
@@ -354,7 +360,7 @@ namespace IntrinioParser.Helpers
 			if (updateSQL)
 				using (SqlConnection conn = new SqlConnection(IntrinioDatabase.DefaultConnectionString))
 				{
-					if (!records.WriteToDatabase(GetTableName<T>(), conn, SqlBulkCopyOptions.Default))
+					if (!records.WriteToDatabase(conn, SqlBulkCopyOptions.Default))
 						throw new SqlNotFilledException(
 							$"It would appear that the write to the SQL database has failed for {typeof(T)}.");
 				}
@@ -371,15 +377,16 @@ namespace IntrinioParser.Helpers
 			return records;
 		}
 
-		public IReadOnlyCollection<T> GetSQL<T>(Dictionary<string, string> arguments = null) where T : class
+		public IReadOnlyCollection<T> GetSQL<T>(Dictionary<string, string> arguments = null) where T : IntrinioAbstract
 		{
 			IntrinioDatabase db = new IntrinioDatabase();
 			IReadOnlyCollection<T> records = db.Set<T>().ToArray();
 			return records;
 		}
 
-		public IReadOnlyCollection<T> GetFile<T>(Dictionary<string, string> arguments = null) where T : class
+		public IReadOnlyCollection<T> GetFile<T>(Dictionary<string, string> arguments = null) where T : IntrinioAbstract
 		{
+			// Retrieve collection from file
 			string filePath = BuildFilePath<T>(arguments);
 			FileInfo fileInfo = new FileInfo(filePath);
 
@@ -389,10 +396,9 @@ namespace IntrinioParser.Helpers
 			string fileContents = File.ReadAllText(filePath);
 			IReadOnlyCollection<T> records = JsonConvert.DeserializeObject<IReadOnlyCollection<T>>(fileContents);
 			return records;
-			// Retrieve collection from file
 		}
 
-		public IReadOnlyCollection<T> GetAPI<T>(Dictionary<string, string> arguments = null) where T : class
+		public IReadOnlyCollection<T> GetAPI<T>(Dictionary<string, string> arguments = null) where T : IntrinioAbstract
 		{
 			// Retrieve from API
 			IReadOnlyCollection<T> results = ProcessResponse<T>(arguments);

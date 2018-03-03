@@ -1,8 +1,8 @@
-﻿using IntrinioParser.Models.Abstract;
+﻿using IntrinioParser.Classes.Abstract.Base;
 
 namespace IntrinioParser.Models.Base
 {
-	public class BaseModel : BaseAbstract
+	internal sealed class BaseModel : BaseAbstract
 	{
 	}
 }

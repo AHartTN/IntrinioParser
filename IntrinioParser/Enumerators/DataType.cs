@@ -6,6 +6,6 @@
 		Security,
 		Index,
 		Owner,
-		Exchange
+		StockExchange
 	}
 }
