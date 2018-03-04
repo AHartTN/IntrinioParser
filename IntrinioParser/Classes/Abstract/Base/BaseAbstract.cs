@@ -1,21 +1,41 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using IntrinioParser.Attributes;
-using IntrinioParser.Interfaces.Base;
-
-namespace IntrinioParser.Classes.Abstract.Base
+﻿namespace IntrinioParser.Classes.Abstract.Base
 {
-	public abstract class BaseAbstract : IBaseModel
+	#region
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	using Attributes;
+
+	using Enumerators;
+
+	using Interfaces.Base;
+
+	using DataType = Enumerators.DataType;
+	#endregion
+
+	internal abstract class BaseAbstract : IBaseModel
 	{
 		[NotMapped]
 		public string FullTableName => $"[{SchemaName}].[{TableName}]";
+
+		#region Implementation of IIdentifiable
+		[Hidden]
+		[Key]
+		public int ID { get; set; }
 
 		[NotMapped]
 		public string SchemaName { get; set; }
 
 		[NotMapped]
 		public string TableName { get; set; }
+		#endregion
 
-		[Hidden]
-		public int ID { get; set; }
+		#region Implementation of IIntrinio
+		[NotMapped]
+		public DataType DataType { get; internal set; }
+
+		[NotMapped]
+		public FileType FileType { get; } = FileType.CSV;
+		#endregion
 	}
 }

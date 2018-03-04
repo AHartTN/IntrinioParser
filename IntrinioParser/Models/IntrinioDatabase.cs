@@ -1,18 +1,19 @@
-﻿using IntrinioParser.Mapping.EF.Base;
-using IntrinioParser.Mapping.EF.Detail;
-using IntrinioParser.Mapping.EF.Master;
-using IntrinioParser.Models.Binding.Detail;
-using IntrinioParser.Models.Binding.Master;
-using IntrinioParser.Properties;
-using Microsoft.EntityFrameworkCore;
-
-namespace IntrinioParser.Models
+﻿namespace IntrinioParser.Models
 {
+	#region
+	using Binding.Detail;
+	using Binding.Master;
+
+	using Mapping.EF.Base;
+
+	using Microsoft.EntityFrameworkCore;
+
+	using Properties;
+	#endregion
+
 	internal sealed class IntrinioDatabase : DbContext
 	{
-		internal static readonly string DefaultConnectionString =
-			$"Data Source={Resources.MSSQL_Server};Initial Catalog={Resources.MSSQL_Database};Integrated Security=True;";
-
+		internal static readonly string DefaultConnectionString = $"Data Source={Resources.MSSQL_Server};Initial Catalog={Resources.MSSQL_Database};Integrated Security=True;";
 
 		public DbSet<CompanyMaster> CompanyMasters { get; set; }
 		public DbSet<SecurityMaster> SecurityMasters { get; set; }
@@ -32,8 +33,6 @@ namespace IntrinioParser.Models
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnModelCreating(modelBuilder);
-
 			modelBuilder.ApplyConfiguration(new BaseMap<CompanyMaster>());
 			modelBuilder.ApplyConfiguration(new BaseMap<SecurityMaster>());
 			modelBuilder.ApplyConfiguration(new BaseMap<IndexMaster>());
@@ -46,7 +45,6 @@ namespace IntrinioParser.Models
 			modelBuilder.ApplyConfiguration(new BaseMap<Owner>());
 			modelBuilder.ApplyConfiguration(new BaseMap<StockExchange>());
 
-
 			//modelBuilder.ApplyConfiguration(new CompanyMasterMap());
 			//modelBuilder.ApplyConfiguration(new SecurityMasterMap());
 			//modelBuilder.ApplyConfiguration(new IndexMasterMap());
@@ -58,6 +56,8 @@ namespace IntrinioParser.Models
 			//modelBuilder.ApplyConfiguration(new IndexMap());
 			//modelBuilder.ApplyConfiguration(new OwnerMap());
 			//modelBuilder.ApplyConfiguration(new StockExchangeMap());
+
+			base.OnModelCreating(modelBuilder);
 		}
 	}
 }

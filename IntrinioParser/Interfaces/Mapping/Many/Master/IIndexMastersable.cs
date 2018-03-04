@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using IntrinioParser.Classes.Abstract.Master;
-
-namespace IntrinioParser.Interfaces.Mapping.Many.Master
+﻿namespace IntrinioParser.Interfaces.Mapping.Many.Master
 {
-	public interface IIndexMastersable
+	#region
+	using System.Collections.Generic;
+
+	using Models.Binding.Master;
+	#endregion
+
+	internal interface IIndexMastersable
 	{
-		ICollection<IndexMasterAbstract> IndexMasters { get; set; }
+		ICollection<IndexMaster> IndexMasters { get; set; }
 	}
 }

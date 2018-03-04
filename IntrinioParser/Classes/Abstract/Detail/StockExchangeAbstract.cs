@@ -1,13 +1,24 @@
-﻿using IntrinioParser.Classes.Abstract.Base;
-using IntrinioParser.Classes.Abstract.Master;
-using IntrinioParser.Enumerators;
-using IntrinioParser.Interfaces.Binding.Detail;
-
-namespace IntrinioParser.Classes.Abstract.Detail
+﻿namespace IntrinioParser.Classes.Abstract.Detail
 {
-	public abstract class StockExchangeAbstract : IntrinioAbstract, IStockExchange
+	#region
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	using Attributes;
+
+	using Base;
+
+	using Enumerators;
+
+	using Interfaces.Binding.Detail;
+
+	using Models.Binding.Master;
+	#endregion
+
+	internal abstract class StockExchangeAbstract
+		: BaseAbstract,
+		  IStockExchange
 	{
-		public StockExchangeAbstract()
+		internal StockExchangeAbstract()
 		{
 			DataType = DataType.StockExchange;
 			//FileType = FileType.CSV;
@@ -15,7 +26,16 @@ namespace IntrinioParser.Classes.Abstract.Detail
 			TableName = "Information";
 		}
 
+		//
+		//public int StockExchangeMasterID { get; set; }
+		//public StockExchangeMaster StockExchangeMaster { get; set; }
+
+		#region Implementation of IStockExchangeMasterable
+		[ForeignKey("StockExchangeMaster")]
 		public int StockExchangeMasterID { get; set; }
-		public StockExchangeMasterAbstract StockExchangeMaster { get; set; }
+
+		[Hidden]
+		public virtual StockExchangeMaster StockExchangeMaster { get; set; }
+		#endregion
 	}
 }

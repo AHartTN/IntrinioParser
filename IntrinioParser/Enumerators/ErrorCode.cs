@@ -1,6 +1,6 @@
 ﻿namespace IntrinioParser.Enumerators
 {
-	public enum ErrorCode
+	internal enum ErrorCode
 	{
 		OK = 200,
 		Unauthorized = 401,

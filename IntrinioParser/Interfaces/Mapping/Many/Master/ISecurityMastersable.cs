@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using IntrinioParser.Classes.Abstract.Master;
-
-namespace IntrinioParser.Interfaces.Mapping.Many.Master
+﻿namespace IntrinioParser.Interfaces.Mapping.Many.Master
 {
-	public interface ISecurityMastersable
+	#region
+	using System.Collections.Generic;
+
+	using Models.Binding.Master;
+	#endregion
+
+	internal interface ISecurityMastersable
 	{
-		ICollection<SecurityMasterAbstract> SecurityMasters { get; set; }
+		ICollection<SecurityMaster> SecurityMasters { get; set; }
 	}
 }

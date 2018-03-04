@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using IntrinioParser.Classes.Abstract.Detail;
-
-namespace IntrinioParser.Interfaces.Mapping.Many.Detail
+﻿namespace IntrinioParser.Interfaces.Mapping.Many.Detail
 {
-	public interface IIndicesable
+	#region
+	using System.Collections.Generic;
+
+	using Models.Binding.Detail;
+	#endregion
+
+	internal interface IIndicesable
 	{
-		ICollection<IndexAbstract> Indices { get; set; }
+		ICollection<Index> Indices { get; set; }
 	}
 }

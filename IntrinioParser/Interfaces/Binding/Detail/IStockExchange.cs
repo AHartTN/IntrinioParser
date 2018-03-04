@@ -1,8 +1,12 @@
-﻿using IntrinioParser.Interfaces.Mapping.Single.Master;
-
-namespace IntrinioParser.Interfaces.Binding.Detail
+﻿namespace IntrinioParser.Interfaces.Binding.Detail
 {
-	public interface IStockExchange : IStockExchangeMasterable
-	{
-	}
+	#region
+	using Base;
+
+	using Mapping.Single.Master;
+	#endregion
+
+	internal interface IStockExchange
+		: IBaseModel,
+		  IStockExchangeMasterable { }
 }

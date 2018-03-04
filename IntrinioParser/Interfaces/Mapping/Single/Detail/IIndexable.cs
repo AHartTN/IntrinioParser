@@ -1,10 +1,12 @@
-﻿using IntrinioParser.Classes.Abstract.Detail;
-
-namespace IntrinioParser.Interfaces.Mapping.Single.Detail
+﻿namespace IntrinioParser.Interfaces.Mapping.Single.Detail
 {
-	public interface IIndexable
+	#region
+	using Models.Binding.Detail;
+	#endregion
+
+	internal interface IIndexable
 	{
 		int IndexID { get; set; }
-		IndexAbstract Index { get; set; }
+		Index Index { get; set; }
 	}
 }

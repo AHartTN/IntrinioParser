@@ -1,8 +1,16 @@
-﻿using IntrinioParser.Interfaces.Mapping.Single.Master;
-
-namespace IntrinioParser.Interfaces.Binding.Detail
+﻿namespace IntrinioParser.Interfaces.Binding.Detail
 {
-	public interface IIndex : IIndexMasterable
+	#region
+	using Base;
+
+	using Mapping.Single.Master;
+
+	using Microsoft.Extensions.Primitives;
+	#endregion
+
+	internal interface IIndex
+		: IBaseModel,
+		  IIndexMasterable
 	{
 		string Symbol { get; set; }
 		string IndexName { get; set; }
@@ -10,6 +18,7 @@ namespace IntrinioParser.Interfaces.Binding.Detail
 		string Continent { get; set; }
 		string Country { get; set; }
 		string FredSymbol { get; set; }
+		string Description { get; set; }
 		string UpdateFrequency { get; set; }
 		string LastUpdated { get; set; }
 		string ObservationStart { get; set; }

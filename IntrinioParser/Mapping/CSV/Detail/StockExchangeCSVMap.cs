@@ -1,9 +1,10 @@
-﻿using CsvHelper.Configuration;
-using IntrinioParser.Models.Binding.Detail;
-
-namespace IntrinioParser.Mapping.CSV.Detail
+﻿namespace IntrinioParser.Mapping.CSV.Detail
 {
-	internal sealed class StockExchangeCSVMap : ClassMap<StockExchange>
-	{
-	}
+	#region
+	using CsvHelper.Configuration;
+
+	using Models.Binding.Detail;
+	#endregion
+
+	internal sealed class StockExchangeCSVMap : ClassMap<StockExchange> { }
 }

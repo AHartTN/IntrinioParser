@@ -1,10 +1,12 @@
-﻿using IntrinioParser.Classes.Abstract.Master;
-
-namespace IntrinioParser.Interfaces.Mapping.Single.Master
+﻿namespace IntrinioParser.Interfaces.Mapping.Single.Master
 {
-	public interface ISecurityMasterable
+	#region
+	using Models.Binding.Master;
+	#endregion
+
+	internal interface ISecurityMasterable
 	{
 		int SecurityMasterID { get; set; }
-		SecurityMasterAbstract SecurityMaster { get; set; }
+		SecurityMaster SecurityMaster { get; set; }
 	}
 }

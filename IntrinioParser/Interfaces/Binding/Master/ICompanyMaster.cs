@@ -1,9 +1,16 @@
-﻿using System;
-using IntrinioParser.Interfaces.Mapping.Many.Detail;
-
-namespace IntrinioParser.Interfaces.Binding.Master
+﻿namespace IntrinioParser.Interfaces.Binding.Master
 {
-	public interface ICompanyMaster : ICompaniesable
+	#region
+	using System;
+
+	using Base;
+
+	using Mapping.Many.Detail;
+	#endregion
+
+	internal interface ICompanyMaster
+		: IBaseModel,
+		  ICompaniesable
 	{
 		string Ticker { get; set; }
 		string CIK { get; set; }

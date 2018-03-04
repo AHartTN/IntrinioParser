@@ -1,31 +1,45 @@
-﻿using System.Collections.Generic;
-using IntrinioParser.Attributes;
-using IntrinioParser.Classes.Abstract.Base;
-using IntrinioParser.Classes.Abstract.Detail;
-using IntrinioParser.Enumerators;
-using IntrinioParser.Interfaces.Binding.Master;
-using Newtonsoft.Json;
-
-namespace IntrinioParser.Classes.Abstract.Master
+﻿namespace IntrinioParser.Classes.Abstract.Master
 {
-	public abstract class IndexMasterAbstract : IntrinioAbstract, IIndexMaster
+	#region
+	using System.Collections.Generic;
+
+	using Attributes;
+
+	using Base;
+
+	using Enumerators;
+
+	using Interfaces.Binding.Master;
+
+	using Models.Binding.Detail;
+
+	using Newtonsoft.Json;
+	#endregion
+
+	internal abstract class IndexMasterAbstract
+		: BaseAbstract,
+		  IIndexMaster
 	{
-		public IndexMasterAbstract()
+		internal IndexMasterAbstract()
 		{
 			DataType = DataType.Index;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Master";
-			Indices = new HashSet<IndexAbstract>();
+			Indices = new HashSet<Index>();
 		}
 
+		#region Implementation of IIndicesable
+		[Hidden]
+		public virtual ICollection<Index> Indices { get; set; }
+		#endregion
+
+		#region Implementation of IIndexMaster
 		[JsonProperty("symbol")]
 		public string Symbol { get; set; }
 
 		[JsonProperty("index_name")]
 		public string IndexName { get; set; }
-
-		[Hidden]
-		public ICollection<IndexAbstract> Indices { get; set; }
+		#endregion
 	}
 }

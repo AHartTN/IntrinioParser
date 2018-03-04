@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using IntrinioParser.Classes.Abstract.Master;
-
-namespace IntrinioParser.Interfaces.Mapping.Many.Master
+﻿namespace IntrinioParser.Interfaces.Mapping.Many.Master
 {
-	public interface IOwnerMastersable
+	#region
+	using System.Collections.Generic;
+
+	using Models.Binding.Master;
+	#endregion
+
+	internal interface IOwnerMastersable
 	{
-		ICollection<OwnerMasterAbstract> OwnerMasters { get; set; }
+		ICollection<OwnerMaster> OwnerMasters { get; set; }
 	}
 }

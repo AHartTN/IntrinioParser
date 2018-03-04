@@ -1,25 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using IntrinioParser.Attributes;
-using IntrinioParser.Classes.Abstract.Base;
-using IntrinioParser.Classes.Abstract.Detail;
-using IntrinioParser.Enumerators;
-using IntrinioParser.Interfaces.Binding.Master;
-using Newtonsoft.Json;
-
-namespace IntrinioParser.Classes.Abstract.Master
+﻿namespace IntrinioParser.Classes.Abstract.Master
 {
-	public abstract class SecurityMasterAbstract : IntrinioAbstract, ISecurityMaster
+	#region
+	using System;
+	using System.Collections.Generic;
+
+	using Attributes;
+
+	using Base;
+
+	using Enumerators;
+
+	using Interfaces.Binding.Master;
+
+	using Models.Binding.Detail;
+
+	using Newtonsoft.Json;
+	#endregion
+
+	internal abstract class SecurityMasterAbstract
+		: BaseAbstract,
+		  ISecurityMaster
 	{
-		public SecurityMasterAbstract()
+		internal SecurityMasterAbstract()
 		{
 			DataType = DataType.Security;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Master";
-			Securities = new HashSet<SecurityAbstract>();
+			Securities = new HashSet<Security>();
 		}
 
+		#region Implementation of ISecuritiesable
+		[Hidden]
+		public virtual ICollection<Security> Securities { get; set; }
+		#endregion
+
+		#region Implementation of ISecurityMaster
 		[JsonProperty("ticker")]
 		public string Ticker { get; set; }
 
@@ -43,8 +59,6 @@ namespace IntrinioParser.Classes.Abstract.Master
 
 		[JsonProperty("last_crsp_adj_date")]
 		public DateTime? LastCRSPAdjDate { get; set; }
-
-		[Hidden]
-		public ICollection<SecurityAbstract> Securities { get; set; }
+		#endregion
 	}
 }

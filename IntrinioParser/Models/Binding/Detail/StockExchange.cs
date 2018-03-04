@@ -1,8 +1,8 @@
-﻿using IntrinioParser.Classes.Abstract.Detail;
-
-namespace IntrinioParser.Models.Binding.Detail
+﻿namespace IntrinioParser.Models.Binding.Detail
 {
-	internal sealed class StockExchange : StockExchangeAbstract
-	{
-	}
+	#region
+	using Classes.Abstract.Detail;
+	#endregion
+
+	internal sealed class StockExchange : StockExchangeAbstract { }
 }

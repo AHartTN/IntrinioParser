@@ -1,8 +1,16 @@
-﻿using IntrinioParser.Interfaces.Mapping.Single.Master;
-
-namespace IntrinioParser.Interfaces.Binding.Detail
+﻿namespace IntrinioParser.Interfaces.Binding.Detail
 {
-	public interface IOwner : IOwnerMasterable
+	#region
+	using Base;
+
+	using Mapping.Single.Master;
+	#endregion
+
+	internal interface IOwner
+		: IBaseModel,
+		  IOwnerMasterable
 	{
+		string OwnerCIK { get; set; }
+		string OwnerName { get; set; }
 	}
 }

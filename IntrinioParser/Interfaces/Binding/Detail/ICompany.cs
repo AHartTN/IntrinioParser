@@ -1,8 +1,14 @@
-﻿using IntrinioParser.Interfaces.Mapping.Single.Master;
-
-namespace IntrinioParser.Interfaces.Binding.Detail
+﻿namespace IntrinioParser.Interfaces.Binding.Detail
 {
-	public interface ICompany : ICompanyMasterable
+	#region
+	using Base;
+
+	using Mapping.Single.Master;
+	#endregion
+
+	internal interface ICompany
+		: IBaseModel,
+		  ICompanyMasterable
 	{
 		string Ticker { get; set; }
 		string CIK { get; set; }

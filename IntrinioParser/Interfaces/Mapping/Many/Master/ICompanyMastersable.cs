@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using IntrinioParser.Classes.Abstract.Master;
-
-namespace IntrinioParser.Interfaces.Mapping.Many.Master
+﻿namespace IntrinioParser.Interfaces.Mapping.Many.Master
 {
-	public interface ICompanyMastersable
+	#region
+	using System.Collections.Generic;
+
+	using Models.Binding.Master;
+	#endregion
+
+	internal interface ICompanyMastersable
 	{
-		ICollection<CompanyMasterAbstract> CompanyMasters { get; set; }
+		ICollection<CompanyMaster> CompanyMasters { get; set; }
 	}
 }

@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using IntrinioParser.Classes.Abstract.Detail;
-
-namespace IntrinioParser.Interfaces.Mapping.Many.Detail
+﻿namespace IntrinioParser.Interfaces.Mapping.Many.Detail
 {
-	public interface ICompaniesable
+	#region
+	using System.Collections.Generic;
+
+	using Models.Binding.Detail;
+	#endregion
+
+	internal interface ICompaniesable
 	{
-		ICollection<CompanyAbstract> Companies { get; set; }
+		ICollection<Company> Companies { get; set; }
 	}
 }

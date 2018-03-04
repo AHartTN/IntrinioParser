@@ -1,10 +1,12 @@
-﻿using IntrinioParser.Classes.Abstract.Detail;
-
-namespace IntrinioParser.Interfaces.Mapping.Single.Detail
+﻿namespace IntrinioParser.Interfaces.Mapping.Single.Detail
 {
-	public interface IOwnerable
+	#region
+	using Models.Binding.Detail;
+	#endregion
+
+	internal interface IOwnerable
 	{
 		int OwnerID { get; set; }
-		OwnerAbstract Owner { get; set; }
+		Owner Owner { get; set; }
 	}
 }

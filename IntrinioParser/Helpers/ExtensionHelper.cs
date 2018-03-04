@@ -1,27 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
-using IntrinioParser.Attributes;
-using IntrinioParser.Classes;
-using IntrinioParser.Classes.Abstract.Base;
-using Microsoft.EntityFrameworkCore;
-
-namespace IntrinioParser.Helpers
+﻿namespace IntrinioParser.Helpers
 {
+	#region
+	using System;
+	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
+	using System.Data;
+	using System.Data.SqlClient;
+	using System.IO;
+	using System.Linq;
+	using System.Reflection;
+	using System.Security.Cryptography;
+	using System.Text;
+	using System.Web;
+
+	using Attributes;
+
+	using Classes.Abstract.Base;
+	#endregion
+
 	internal static class ExtensionHelper
 	{
 		internal static string BuildQueryString(this Dictionary<string, string> arguments)
 		{
-			if (arguments == null || !arguments.Any())
+			if (arguments == null
+				|| !arguments.Any())
 				return null;
 
 			string queryString = "?";
@@ -31,7 +34,9 @@ namespace IntrinioParser.Helpers
 													  let value = HttpUtility.UrlEncode(argument.Value)
 													  select $"{key}={value}").ToArray();
 
-			queryString = queryString + string.Join("&", argStrings);
+			queryString = queryString
+						  + string.Join("&",
+										argStrings);
 
 			return queryString;
 		}
@@ -61,13 +66,13 @@ namespace IntrinioParser.Helpers
 		{
 			if (string.IsNullOrWhiteSpace(path))
 				throw new ArgumentNullException(nameof(path),
-					"The path specified is empty or was null. A valid path is requried for retrieving a file.");
+												"The path specified is empty or was null. A valid path is requried for retrieving a file.");
 
 			FileInfo fileInfo = new FileInfo(path);
 
 			if (fileInfo?.Directory == null)
 				throw new ArgumentNullException(nameof(fileInfo),
-					$"Unable to instantiate a new file info object. Get File failed for {path}");
+												$"Unable to instantiate a new file info object. Get File failed for {path}");
 
 			if (!fileInfo.Exists)
 			{
@@ -84,11 +89,14 @@ namespace IntrinioParser.Helpers
 			return fileInfo;
 		}
 
-		internal static FileInfo WriteFile(this string filePath, string contents)
+		internal static FileInfo WriteFile(this string filePath,
+										   string contents)
 		{
 			FileInfo fileInfo = filePath.GetFile();
 
-			File.AppendAllText(fileInfo.FullName, contents, Encoding.UTF8);
+			File.AppendAllText(fileInfo.FullName,
+							   contents,
+							   Encoding.UTF8);
 			return fileInfo;
 		}
 
@@ -98,7 +106,9 @@ namespace IntrinioParser.Helpers
 			{
 				Type t = typeof(T);
 
-				PropertyInfo[] properties = t.GetProperties().Where(EventTypeFilter).ToArray();
+				PropertyInfo[] properties = t.GetProperties()
+											 .Where(EventTypeFilter)
+											 .ToArray();
 				DataTable table = new DataTable();
 
 				foreach (PropertyInfo property in properties)
@@ -106,17 +116,17 @@ namespace IntrinioParser.Helpers
 					Type propertyType = property.PropertyType;
 
 					if (propertyType.IsGenericType
-						&&
-						propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+						&& propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
 						propertyType = Nullable.GetUnderlyingType(propertyType);
 
-					table.Columns.Add(new DataColumn(property.Name, propertyType));
+					table.Columns.Add(new DataColumn(property.Name,
+													 propertyType));
 				}
 
 				foreach (T entity in entities)
-					table.Rows.Add(properties.Select(
-						property => GetPropertyValue(
-							property.GetValue(entity, null))).ToArray());
+					table.Rows.Add(properties.Select(property => GetPropertyValue(property.GetValue(entity,
+																									null)))
+											 .ToArray());
 
 				return table;
 			}
@@ -129,13 +139,16 @@ namespace IntrinioParser.Helpers
 
 		private static bool EventTypeFilter(PropertyInfo p)
 		{
-			if (Attribute.GetCustomAttribute(p, typeof(NotMappedAttribute)) is NotMappedAttribute notMappedAttribute)
+			if (Attribute.GetCustomAttribute(p,
+											 typeof(NotMappedAttribute)) is NotMappedAttribute notMappedAttribute)
 				return false;
 
-			if (Attribute.GetCustomAttribute(p, typeof(HiddenAttribute)) is HiddenAttribute hiddenAttribute)
+			if (Attribute.GetCustomAttribute(p,
+											 typeof(HiddenAttribute)) is HiddenAttribute hiddenAttribute)
 				return !hiddenAttribute.IsHidden;
 
-			if (Attribute.GetCustomAttribute(p, typeof(AssociationAttribute)) is AssociationAttribute associationAttribute)
+			if (Attribute.GetCustomAttribute(p,
+											 typeof(AssociationAttribute)) is AssociationAttribute associationAttribute)
 				return associationAttribute.IsForeignKey == false;
 
 			return true;
@@ -146,22 +159,24 @@ namespace IntrinioParser.Helpers
 			return o ?? DBNull.Value;
 		}
 
-		internal static void SqlBulkCopy_SqlRowsCopied(object sender, SqlRowsCopiedEventArgs e)
+		internal static void SqlBulkCopy_SqlRowsCopied(object sender,
+													   SqlRowsCopiedEventArgs e)
 		{
 			SqlBulkCopy sbc = sender as SqlBulkCopy;
 
 			if (sbc == null)
 				return;
 
-			Console.Write(
-				$"\r{e.RowsCopied} Rows Copied to the '{sbc.DestinationTableName}' table | Abort: {e.Abort} | Streaming: {sbc.EnableStreaming}\t\t\t\t\t\t");
+			Console.Write($"\r{e.RowsCopied} Rows Copied to the '{sbc.DestinationTableName}' table | Abort: {e.Abort} | Streaming: {sbc.EnableStreaming}\t\t\t\t\t\t");
 		}
 
-		internal static DataTable AsDataTable<T>(this IEnumerable<T> data)
+		private static DataTable AsDataTable<T>(this IEnumerable<T> data)
 		{
 			Type t = typeof(T);
 
-			IReadOnlyCollection<PropertyInfo> properties = t.GetProperties().Where(EventTypeFilter).ToArray();
+			IReadOnlyCollection<PropertyInfo> properties = t.GetProperties()
+															.Where(EventTypeFilter)
+															.ToArray();
 			DataTable table = new DataTable();
 
 			foreach (PropertyInfo property in properties)
@@ -169,22 +184,25 @@ namespace IntrinioParser.Helpers
 				Type propertyType = property.PropertyType;
 
 				if (propertyType.IsGenericType
-					&&
-					propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+					&& propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
 					propertyType = Nullable.GetUnderlyingType(propertyType);
 
-				table.Columns.Add(new DataColumn(property.Name, propertyType));
+				table.Columns.Add(new DataColumn(property.Name,
+												 propertyType));
 			}
 
 			foreach (T entity in data)
-				table.Rows.Add(properties.Select(
-					property => GetPropertyValue(
-						property.GetValue(entity, null))).ToArray());
+				table.Rows.Add(properties.Select(property => GetPropertyValue(property.GetValue(entity,
+																								null)))
+										 .ToArray());
 
 			return table;
 		}
 
-		internal static bool WriteToDatabase<T>(this IEnumerable<T> data, SqlConnection conn, SqlBulkCopyOptions options) where T : BaseAbstract
+		internal static bool WriteToDatabase<T>(this IEnumerable<T> data,
+												SqlConnection conn,
+												SqlBulkCopyOptions options)
+			where T : BaseAbstract
 		{
 			T instance = Activator.CreateInstance<T>();
 
@@ -193,7 +211,9 @@ namespace IntrinioParser.Helpers
 
 			SqlTransaction transaction = conn.BeginTransaction();
 
-			using (SqlBulkCopy sbc = new SqlBulkCopy(conn, options, transaction))
+			using (SqlBulkCopy sbc = new SqlBulkCopy(conn,
+													 options,
+													 transaction))
 			{
 				sbc.DestinationTableName = $"{instance.FullTableName}";
 				try
@@ -204,7 +224,8 @@ namespace IntrinioParser.Helpers
 					sbc.BulkCopyTimeout = 60;
 
 					foreach (DataColumn column in dataTable.Columns)
-						sbc.ColumnMappings.Add(column.ColumnName, column.ColumnName);
+						sbc.ColumnMappings.Add(column.ColumnName,
+											   column.ColumnName);
 
 					sbc.WriteToServer(dataTable);
 				}
@@ -233,7 +254,8 @@ namespace IntrinioParser.Helpers
 		/// <param name="source">The source string to check against</param>
 		/// <param name="replacement">The replacement string should the check come back true</param>
 		/// <returns>The replacement string if true, otherwise the source string</returns>
-		internal static string IfNullOrWhiteSpace(this string source, string replacement)
+		internal static string IfNullOrWhiteSpace(this string source,
+												  string replacement)
 		{
 			if (string.IsNullOrWhiteSpace(source))
 				return replacement;
@@ -248,7 +270,9 @@ namespace IntrinioParser.Helpers
 		/// <param name="replacement">The replacement string should the check come back true</param>
 		/// <param name="input">The values to compare the source string against</param>
 		/// <returns>The replacement string if the source string equals any of the input strings, otherwise the source string</returns>
-		internal static string IfEquals(this string source, string[] input, string replacement)
+		internal static string IfEquals(this string source,
+										string[] input,
+										string replacement)
 		{
 			if (input.Any(a => a.Equals(source)))
 				return replacement;
@@ -270,8 +294,8 @@ namespace IntrinioParser.Helpers
 			}
 			else
 			{
-				int j;
-				if (int.TryParse(source, out j))
+				if (int.TryParse(source,
+								 out int j))
 					result = j;
 				else
 					result = null;
@@ -294,8 +318,8 @@ namespace IntrinioParser.Helpers
 			}
 			else
 			{
-				decimal j;
-				if (decimal.TryParse(source, out j))
+				if (decimal.TryParse(source,
+									 out decimal j))
 					result = j;
 				else
 					result = null;

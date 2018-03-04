@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using IntrinioParser.Classes.Abstract.Master;
-
-namespace IntrinioParser.Interfaces.Mapping.Many.Master
+﻿namespace IntrinioParser.Interfaces.Mapping.Many.Master
 {
-	public interface IStockExchangeMastersable
+	#region
+	using System.Collections.Generic;
+
+	using Models.Binding.Master;
+	#endregion
+
+	internal interface IStockExchangeMastersable
 	{
-		ICollection<StockExchangeMasterAbstract> StockExchangeMasters { get; set; }
+		ICollection<StockExchangeMaster> StockExchangeMasters { get; set; }
 	}
 }

@@ -1,8 +1,14 @@
-﻿using IntrinioParser.Interfaces.Mapping.Many.Detail;
-
-namespace IntrinioParser.Interfaces.Binding.Master
+﻿namespace IntrinioParser.Interfaces.Binding.Master
 {
-	public interface IStockExchangeMaster : IStockExchangesable
+	#region
+	using Base;
+
+	using Mapping.Many.Detail;
+	#endregion
+
+	internal interface IStockExchangeMaster
+		: IBaseModel,
+		  IStockExchangesable
 	{
 		string Symbol { get; set; }
 		string MIC { get; set; }

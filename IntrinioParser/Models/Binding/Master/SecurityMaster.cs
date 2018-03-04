@@ -1,8 +1,8 @@
-﻿using IntrinioParser.Classes.Abstract.Master;
-
-namespace IntrinioParser.Models.Binding.Master
+﻿namespace IntrinioParser.Models.Binding.Master
 {
-	internal sealed class SecurityMaster : SecurityMasterAbstract
-	{
-	}
+	#region
+	using Classes.Abstract.Master;
+	#endregion
+
+	internal sealed class SecurityMaster : SecurityMasterAbstract { }
 }

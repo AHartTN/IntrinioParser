@@ -1,6 +1,6 @@
 ﻿namespace IntrinioParser.Enumerators
 {
-	public enum FileType
+	internal enum FileType
 	{
 		CSV,
 		JSON

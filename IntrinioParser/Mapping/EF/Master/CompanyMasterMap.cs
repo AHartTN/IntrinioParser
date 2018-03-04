@@ -1,13 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using IntrinioParser.Classes.Abstract.Master;
-using IntrinioParser.Mapping.EF.Base;
-using IntrinioParser.Models.Binding.Master;
-
-namespace IntrinioParser.Mapping.EF.Master
+﻿namespace IntrinioParser.Mapping.EF.Master
 {
-    internal sealed class CompanyMasterMap : BaseMap<CompanyMaster>
-    {
-    }
+	#region
+	using System;
+	using System.Linq;
+
+	using Classes.Abstract.Base;
+
+	using Microsoft.EntityFrameworkCore;
+	using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+	using Models.Binding.Master;
+	#endregion
+
+	internal sealed class CompanyMasterMap : IEntityTypeConfiguration<CompanyMaster>
+	{
+		public void Configure(EntityTypeBuilder<CompanyMaster> builder)
+		{
+			Type genericType = builder.GetType()
+									  .GenericTypeArguments.First();
+			BaseAbstract instance = Activator.CreateInstance(genericType) as BaseAbstract;
+
+			if (instance == null)
+				throw new TypeLoadException($"Unable to set mapping information for {genericType} as it does not appear to be a BaseAbstract object.");
+
+			builder.ToTable(instance.TableName,
+							instance.SchemaName);
+		}
+	}
 }

@@ -1,9 +1,16 @@
-﻿using System;
-using IntrinioParser.Interfaces.Mapping.Single.Master;
-
-namespace IntrinioParser.Interfaces.Binding.Detail
+﻿namespace IntrinioParser.Interfaces.Binding.Detail
 {
-	public interface ISecurity : ISecurityMasterable
+	#region
+	using System;
+
+	using Base;
+
+	using Mapping.Single.Master;
+	#endregion
+
+	internal interface ISecurity
+		: IBaseModel,
+		  ISecurityMasterable
 	{
 		string Ticker { get; set; }
 		string FIGITicker { get; set; }

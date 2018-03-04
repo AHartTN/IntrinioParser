@@ -1,10 +1,12 @@
-﻿using IntrinioParser.Classes.Abstract.Detail;
-
-namespace IntrinioParser.Interfaces.Mapping.Single.Detail
+﻿namespace IntrinioParser.Interfaces.Mapping.Single.Detail
 {
-	public interface IStockExchangeable
+	#region
+	using Models.Binding.Detail;
+	#endregion
+
+	internal interface IStockExchangeable
 	{
 		int StockExchangeID { get; set; }
-		StockExchangeAbstract StockExchange { get; set; }
+		StockExchange StockExchange { get; set; }
 	}
 }

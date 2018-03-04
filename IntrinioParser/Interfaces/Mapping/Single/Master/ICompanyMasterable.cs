@@ -1,10 +1,12 @@
-﻿using IntrinioParser.Classes.Abstract.Master;
-
-namespace IntrinioParser.Interfaces.Mapping.Single.Master
+﻿namespace IntrinioParser.Interfaces.Mapping.Single.Master
 {
-	public interface ICompanyMasterable
+	#region
+	using Models.Binding.Master;
+	#endregion
+
+	internal interface ICompanyMasterable
 	{
 		int CompanyMasterID { get; set; }
-		CompanyMasterAbstract CompanyMaster { get; set; }
+		CompanyMaster CompanyMaster { get; set; }
 	}
 }

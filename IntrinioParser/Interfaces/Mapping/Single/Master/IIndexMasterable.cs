@@ -1,10 +1,12 @@
-﻿using IntrinioParser.Classes.Abstract.Master;
-
-namespace IntrinioParser.Interfaces.Mapping.Single.Master
+﻿namespace IntrinioParser.Interfaces.Mapping.Single.Master
 {
-	public interface IIndexMasterable
+	#region
+	using Models.Binding.Master;
+	#endregion
+
+	internal interface IIndexMasterable
 	{
 		int IndexMasterID { get; set; }
-		IndexMasterAbstract IndexMaster { get; set; }
+		IndexMaster IndexMaster { get; set; }
 	}
 }

@@ -1,10 +1,12 @@
-﻿using IntrinioParser.Classes.Abstract.Detail;
-
-namespace IntrinioParser.Interfaces.Mapping.Single.Detail
+﻿namespace IntrinioParser.Interfaces.Mapping.Single.Detail
 {
-	public interface ICompanyable
+	#region
+	using Models.Binding.Detail;
+	#endregion
+
+	internal interface ICompanyable
 	{
 		int CompanyID { get; set; }
-		CompanyAbstract Company { get; set; }
+		Company Company { get; set; }
 	}
 }

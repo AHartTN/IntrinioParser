@@ -1,10 +1,15 @@
-using System.Collections.Generic;
-using IntrinioParser.Classes.Abstract.Base;
-using Newtonsoft.Json;
-
 namespace IntrinioParser.Classes
 {
-	internal sealed class JsonResponse<T> where T : IntrinioAbstract
+	#region
+	using System.Collections.Generic;
+
+	using Abstract.Base;
+
+	using Newtonsoft.Json;
+	#endregion
+
+	internal sealed class JsonResponse<T>
+		where T : BaseAbstract
 	{
 		[JsonProperty("result_count")]
 		public int ResultCount { get; set; }

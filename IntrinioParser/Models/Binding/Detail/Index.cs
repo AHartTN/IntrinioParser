@@ -1,8 +1,8 @@
-﻿using IntrinioParser.Classes.Abstract.Detail;
-
-namespace IntrinioParser.Models.Binding.Detail
+﻿namespace IntrinioParser.Models.Binding.Detail
 {
-	internal sealed class Index : IndexAbstract
-	{
-	}
+	#region
+	using Classes.Abstract.Detail;
+	#endregion
+
+	internal sealed class Index : IndexAbstract { }
 }

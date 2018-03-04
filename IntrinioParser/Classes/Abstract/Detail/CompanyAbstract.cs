@@ -1,15 +1,26 @@
-﻿using IntrinioParser.Attributes;
-using IntrinioParser.Classes.Abstract.Base;
-using IntrinioParser.Classes.Abstract.Master;
-using IntrinioParser.Enumerators;
-using IntrinioParser.Interfaces.Binding.Detail;
-using Newtonsoft.Json;
-
-namespace IntrinioParser.Classes.Abstract.Detail
+﻿namespace IntrinioParser.Classes.Abstract.Detail
 {
-	public abstract class CompanyAbstract : IntrinioAbstract, ICompany
+	#region
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	using Attributes;
+
+	using Base;
+
+	using Enumerators;
+
+	using Interfaces.Binding.Detail;
+
+	using Models.Binding.Master;
+
+	using Newtonsoft.Json;
+	#endregion
+
+	internal abstract class CompanyAbstract
+		: BaseAbstract,
+		  ICompany
 	{
-		public CompanyAbstract()
+		internal CompanyAbstract()
 		{
 			DataType = DataType.Company;
 			//FileType = FileType.CSV;
@@ -17,8 +28,15 @@ namespace IntrinioParser.Classes.Abstract.Detail
 			TableName = "Information";
 		}
 
+		#region Implementation of ICompanyMasterable
+		[ForeignKey("CompanyMaster")]
 		public int CompanyMasterID { get; set; }
 
+		[Hidden]
+		public virtual CompanyMaster CompanyMaster { get; set; }
+		#endregion
+
+		#region Implementation of ICompany
 		[JsonProperty("ticker")]
 		public string Ticker { get; set; }
 
@@ -105,8 +123,6 @@ namespace IntrinioParser.Classes.Abstract.Detail
 
 		[JsonProperty("standardized_active")]
 		public bool? StandardizedActive { get; set; }
-
-		[Hidden]
-		public CompanyMasterAbstract CompanyMaster { get; set; }
+		#endregion
 	}
 }

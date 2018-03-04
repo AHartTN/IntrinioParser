@@ -1,10 +1,12 @@
-﻿using IntrinioParser.Classes.Abstract.Detail;
-
-namespace IntrinioParser.Interfaces.Mapping.Single.Detail
+﻿namespace IntrinioParser.Interfaces.Mapping.Single.Detail
 {
-	public interface ISecurityable
+	#region
+	using Models.Binding.Detail;
+	#endregion
+
+	internal interface ISecurityable
 	{
 		int SecurityID { get; set; }
-		SecurityAbstract Security { get; set; }
+		Security Security { get; set; }
 	}
 }

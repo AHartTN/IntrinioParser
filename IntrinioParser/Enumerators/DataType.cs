@@ -1,6 +1,6 @@
 ﻿namespace IntrinioParser.Enumerators
 {
-	public enum DataType
+	internal enum DataType
 	{
 		Company,
 		Security,

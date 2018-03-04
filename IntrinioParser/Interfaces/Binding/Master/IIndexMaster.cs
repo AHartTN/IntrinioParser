@@ -1,8 +1,14 @@
-﻿using IntrinioParser.Interfaces.Mapping.Many.Detail;
-
-namespace IntrinioParser.Interfaces.Binding.Master
+﻿namespace IntrinioParser.Interfaces.Binding.Master
 {
-	public interface IIndexMaster : IIndicesable
+	#region
+	using Base;
+
+	using Mapping.Many.Detail;
+	#endregion
+
+	internal interface IIndexMaster
+		: IBaseModel,
+		  IIndicesable
 	{
 		string Symbol { get; set; }
 		string IndexName { get; set; }

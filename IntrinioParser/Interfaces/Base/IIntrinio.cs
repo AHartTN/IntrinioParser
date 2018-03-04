@@ -1,8 +1,10 @@
-﻿using IntrinioParser.Enumerators;
-
-namespace IntrinioParser.Interfaces.Base
+﻿namespace IntrinioParser.Interfaces.Base
 {
-	public interface IIntrinio : IBaseModel
+	#region
+	using Enumerators;
+	#endregion
+
+	internal interface IIntrinio
 	{
 		DataType DataType { get; }
 		FileType FileType { get; }

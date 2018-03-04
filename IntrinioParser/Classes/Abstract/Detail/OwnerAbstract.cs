@@ -1,13 +1,27 @@
-﻿using IntrinioParser.Classes.Abstract.Base;
-using IntrinioParser.Classes.Abstract.Master;
-using IntrinioParser.Enumerators;
-using IntrinioParser.Interfaces.Binding.Detail;
-
-namespace IntrinioParser.Classes.Abstract.Detail
+﻿namespace IntrinioParser.Classes.Abstract.Detail
 {
-	public abstract class OwnerAbstract : IntrinioAbstract, IOwner
+	#region
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	using Attributes;
+
+	using Base;
+
+	using Enumerators;
+
+	using Interfaces.Binding.Detail;
+
+	using Models.Binding.Master;
+
+	using Newtonsoft.Json;
+	using Newtonsoft.Json.Serialization;
+	#endregion
+
+	internal abstract class OwnerAbstract
+		: BaseAbstract,
+		  IOwner
 	{
-		public OwnerAbstract()
+		internal OwnerAbstract()
 		{
 			DataType = DataType.Owner;
 			//FileType = FileType.CSV;
@@ -15,7 +29,19 @@ namespace IntrinioParser.Classes.Abstract.Detail
 			TableName = "Information";
 		}
 
+		#region Implementation of IOwnerMasterable
+		[ForeignKey("OwnerMaster")]
 		public int OwnerMasterID { get; set; }
-		public OwnerMasterAbstract OwnerMaster { get; set; }
+
+		[Hidden]
+		public virtual OwnerMaster OwnerMaster { get; set; }
+		#endregion
+
+		#region Implementation of IOwner
+		[JsonProperty("owner_cik")]
+		public string OwnerCIK { get; set; }
+		[JsonProperty("owner_name")]
+		public string OwnerName { get; set; }
+		#endregion
 	}
 }

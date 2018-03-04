@@ -1,16 +1,27 @@
-﻿using System;
-using IntrinioParser.Attributes;
-using IntrinioParser.Classes.Abstract.Base;
-using IntrinioParser.Classes.Abstract.Master;
-using IntrinioParser.Enumerators;
-using IntrinioParser.Interfaces.Binding.Detail;
-using Newtonsoft.Json;
-
-namespace IntrinioParser.Classes.Abstract.Detail
+﻿namespace IntrinioParser.Classes.Abstract.Detail
 {
-	public abstract class SecurityAbstract : IntrinioAbstract, ISecurity
+	#region
+	using System;
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	using Attributes;
+
+	using Base;
+
+	using Enumerators;
+
+	using Interfaces.Binding.Detail;
+
+	using Models.Binding.Master;
+
+	using Newtonsoft.Json;
+	#endregion
+
+	internal abstract class SecurityAbstract
+		: BaseAbstract,
+		  ISecurity
 	{
-		public SecurityAbstract()
+		internal SecurityAbstract()
 		{
 			DataType = DataType.Security;
 			//FileType = FileType.CSV;
@@ -18,8 +29,15 @@ namespace IntrinioParser.Classes.Abstract.Detail
 			TableName = "Information";
 		}
 
+		#region Implementation of ISecurityMasterable
+		[ForeignKey("SecurityMaster")]
 		public int SecurityMasterID { get; set; }
 
+		[Hidden]
+		public virtual SecurityMaster SecurityMaster { get; set; }
+		#endregion
+
+		#region Implementation of ISecurity
 		[JsonProperty("ticker")]
 		public string Ticker { get; set; }
 
@@ -76,8 +94,6 @@ namespace IntrinioParser.Classes.Abstract.Detail
 
 		[JsonProperty("primary_listing")]
 		public bool? PrimaryListing { get; set; }
-
-		[Hidden]
-		public SecurityMasterAbstract SecurityMaster { get; set; }
+		#endregion
 	}
 }

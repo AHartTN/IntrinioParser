@@ -1,30 +1,63 @@
-﻿using System.Collections.Generic;
-using IntrinioParser.Classes.Abstract.Base;
-using IntrinioParser.Classes.Abstract.Detail;
-using IntrinioParser.Enumerators;
-using IntrinioParser.Interfaces.Binding.Master;
-
-namespace IntrinioParser.Classes.Abstract.Master
+﻿namespace IntrinioParser.Classes.Abstract.Master
 {
-	public abstract class StockExchangeMasterAbstract : IntrinioAbstract, IStockExchangeMaster
+	#region
+	using System.Collections.Generic;
+
+	using Attributes;
+
+	using Base;
+
+	using Enumerators;
+
+	using Interfaces.Binding.Master;
+
+	using Models.Binding.Detail;
+
+	using Newtonsoft.Json;
+	#endregion
+
+	internal abstract class StockExchangeMasterAbstract
+		: BaseAbstract,
+		  IStockExchangeMaster
 	{
-		public StockExchangeMasterAbstract()
+		internal StockExchangeMasterAbstract()
 		{
 			DataType = DataType.StockExchange;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Master";
-			StockExchanges = new HashSet<StockExchangeAbstract>();
+			StockExchanges = new HashSet<StockExchange>();
 		}
 
+		#region Implementation of IStockExchangesable
+		[Hidden]
+		public virtual ICollection<StockExchange> StockExchanges { get; set; }
+		#endregion
+
+		#region Implementation of IStockExchangeMaster
+		[JsonProperty("symbol")]
 		public string Symbol { get; set; }
+
+		[JsonProperty("mic")]
 		public string MIC { get; set; }
+
+		[JsonProperty("institution_name")]
 		public string InstitutionName { get; set; }
+
+		[JsonProperty("acronym")]
 		public string Acronym { get; set; }
+
+		[JsonProperty("city")]
 		public string City { get; set; }
+
+		[JsonProperty("country")]
 		public string Country { get; set; }
+
+		[JsonProperty("country_code")]
 		public string CountryCode { get; set; }
+
+		[JsonProperty("website")]
 		public string Website { get; set; }
-		public IReadOnlyCollection<StockExchangeAbstract> StockExchanges { get; set; }
+		#endregion
 	}
 }

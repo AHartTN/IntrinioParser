@@ -1,11 +1,14 @@
-﻿using CsvHelper.Configuration;
-using IntrinioParser.Models.Binding.Master;
-
-namespace IntrinioParser.Mapping.CSV.Master
+﻿namespace IntrinioParser.Mapping.CSV.Master
 {
+	#region
+	using CsvHelper.Configuration;
+
+	using Models.Binding.Master;
+	#endregion
+
 	internal sealed class CompanyMasterCSVMap : ClassMap<CompanyMaster>
 	{
-		public CompanyMasterCSVMap()
+		internal CompanyMasterCSVMap()
 		{
 			Map(m => m.Ticker)
 				.Name("TICKER")

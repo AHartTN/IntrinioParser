@@ -1,15 +1,26 @@
-﻿using IntrinioParser.Attributes;
-using IntrinioParser.Classes.Abstract.Base;
-using IntrinioParser.Classes.Abstract.Master;
-using IntrinioParser.Enumerators;
-using IntrinioParser.Interfaces.Binding.Detail;
-using Newtonsoft.Json;
-
-namespace IntrinioParser.Classes.Abstract.Detail
+﻿namespace IntrinioParser.Classes.Abstract.Detail
 {
-	public abstract class IndexAbstract : IntrinioAbstract, IIndex
+	#region
+	using System.ComponentModel.DataAnnotations.Schema;
+
+	using Attributes;
+
+	using Base;
+
+	using Enumerators;
+
+	using Interfaces.Binding.Detail;
+
+	using Models.Binding.Master;
+
+	using Newtonsoft.Json;
+	#endregion
+
+	internal abstract class IndexAbstract
+		: BaseAbstract,
+		  IIndex
 	{
-		public IndexAbstract()
+		internal IndexAbstract()
 		{
 			DataType = DataType.Index;
 			//FileType = FileType.CSV;
@@ -17,8 +28,15 @@ namespace IntrinioParser.Classes.Abstract.Detail
 			TableName = "Information";
 		}
 
+		#region Implementation of IIndexMasterable
+		[ForeignKey("IndexMaster")]
 		public int IndexMasterID { get; set; }
 
+		[Hidden]
+		public virtual IndexMaster IndexMaster { get; set; }
+		#endregion
+
+		#region Implementation of IIndex
 		[JsonProperty("symbol")]
 		public string Symbol { get; set; }
 
@@ -33,6 +51,9 @@ namespace IntrinioParser.Classes.Abstract.Detail
 
 		[JsonProperty("country")]
 		public string Country { get; set; }
+
+		[JsonProperty("description")]
+		public string Description { get; set; }
 
 		[JsonProperty("fred_symbol")]
 		public string FredSymbol { get; set; }
@@ -63,8 +84,6 @@ namespace IntrinioParser.Classes.Abstract.Detail
 
 		[JsonProperty("units_short")]
 		public string UnitsShort { get; set; }
-
-		[Hidden]
-		public IndexMasterAbstract IndexMaster { get; set; }
+		#endregion
 	}
 }

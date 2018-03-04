@@ -1,25 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using IntrinioParser.Attributes;
-using IntrinioParser.Classes.Abstract.Base;
-using IntrinioParser.Classes.Abstract.Detail;
-using IntrinioParser.Enumerators;
-using IntrinioParser.Interfaces.Binding.Master;
-using Newtonsoft.Json;
-
-namespace IntrinioParser.Classes.Abstract.Master
+﻿namespace IntrinioParser.Classes.Abstract.Master
 {
-	public abstract class CompanyMasterAbstract : IntrinioAbstract, ICompanyMaster
+	#region
+	using System;
+	using System.Collections.Generic;
+
+	using Attributes;
+
+	using Base;
+
+	using Enumerators;
+
+	using Interfaces.Binding.Master;
+
+	using Models.Binding.Detail;
+
+	using Newtonsoft.Json;
+	#endregion
+
+	internal abstract class CompanyMasterAbstract
+		: BaseAbstract,
+		  ICompanyMaster
 	{
-		public CompanyMasterAbstract()
+		internal CompanyMasterAbstract()
 		{
 			DataType = DataType.Company;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Master";
-			Companies = new HashSet<CompanyAbstract>();
+			Companies = new HashSet<Company>();
 		}
 
+		#region Implementation of ICompaniesable
+		[Hidden]
+		public virtual ICollection<Company> Companies { get; set; }
+		#endregion
+
+		#region Implementation of ICompanyMaster
 		[JsonProperty("ticker")]
 		public string Ticker { get; set; }
 
@@ -34,8 +50,6 @@ namespace IntrinioParser.Classes.Abstract.Master
 
 		[JsonProperty("latest_filing_date")]
 		public DateTime? LatestFilingDate { get; set; }
-
-		[Hidden]
-		public ICollection<CompanyAbstract> Companies { get; set; }
+		#endregion
 	}
 }
