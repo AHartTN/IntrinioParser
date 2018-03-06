@@ -3,7 +3,6 @@
 	#region
 	using System;
 	using System.Collections.Generic;
-	using System.Collections.ObjectModel;
 
 	using Helpers;
 
@@ -15,6 +14,7 @@
 	{
 		private static void Main(string[] args)
 		{
+
 			Dictionary<string, string> arguments = new Dictionary<string, string>
 												   {
 													   {"ticker", "MSFT"}

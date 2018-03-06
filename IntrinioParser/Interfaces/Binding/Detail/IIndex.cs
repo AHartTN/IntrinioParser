@@ -4,8 +4,6 @@
 	using Base;
 
 	using Mapping.Single.Master;
-
-	using Microsoft.Extensions.Primitives;
 	#endregion
 
 	internal interface IIndex

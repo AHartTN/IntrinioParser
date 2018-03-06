@@ -22,7 +22,7 @@
 	{
 		internal IndexAbstract()
 		{
-			DataType = DataType.Index;
+			DataType = IntrinioDataType.Indices;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Information";

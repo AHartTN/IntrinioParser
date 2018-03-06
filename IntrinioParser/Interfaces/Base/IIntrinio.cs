@@ -6,7 +6,7 @@
 
 	internal interface IIntrinio
 	{
-		DataType DataType { get; }
+		IntrinioDataType DataType { get; }
 		FileType FileType { get; }
 	}
 }

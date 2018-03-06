@@ -14,7 +14,6 @@
 	using Models.Binding.Master;
 
 	using Newtonsoft.Json;
-	using Newtonsoft.Json.Serialization;
 	#endregion
 
 	internal abstract class OwnerAbstract
@@ -23,7 +22,7 @@
 	{
 		internal OwnerAbstract()
 		{
-			DataType = DataType.Owner;
+			DataType = IntrinioDataType.Owners;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Information";
@@ -40,6 +39,7 @@
 		#region Implementation of IOwner
 		[JsonProperty("owner_cik")]
 		public string OwnerCIK { get; set; }
+
 		[JsonProperty("owner_name")]
 		public string OwnerName { get; set; }
 		#endregion

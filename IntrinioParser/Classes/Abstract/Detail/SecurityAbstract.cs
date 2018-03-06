@@ -23,7 +23,7 @@
 	{
 		internal SecurityAbstract()
 		{
-			DataType = DataType.Security;
+			DataType = IntrinioDataType.Securities;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Information";

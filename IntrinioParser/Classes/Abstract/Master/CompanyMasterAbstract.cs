@@ -23,7 +23,7 @@
 	{
 		internal CompanyMasterAbstract()
 		{
-			DataType = DataType.Company;
+			DataType = IntrinioDataType.Companies;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Master";

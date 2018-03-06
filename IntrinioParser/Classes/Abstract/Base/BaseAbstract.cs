@@ -9,8 +9,6 @@
 	using Enumerators;
 
 	using Interfaces.Base;
-
-	using DataType = Enumerators.DataType;
 	#endregion
 
 	internal abstract class BaseAbstract : IBaseModel
@@ -32,7 +30,7 @@
 
 		#region Implementation of IIntrinio
 		[NotMapped]
-		public DataType DataType { get; internal set; }
+		public IntrinioDataType DataType { get; internal set; }
 
 		[NotMapped]
 		public FileType FileType { get; } = FileType.CSV;

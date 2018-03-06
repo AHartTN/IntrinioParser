@@ -20,7 +20,7 @@
 	{
 		internal StockExchangeAbstract()
 		{
-			DataType = DataType.StockExchange;
+			DataType = IntrinioDataType.StockExchanges;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Information";

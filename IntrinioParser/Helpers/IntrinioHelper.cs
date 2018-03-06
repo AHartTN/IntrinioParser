@@ -3,7 +3,6 @@
 	#region
 	using System;
 	using System.Collections.Generic;
-	using System.Collections.ObjectModel;
 	using System.Data.SqlClient;
 	using System.Data.SqlTypes;
 	using System.IO;
@@ -31,13 +30,6 @@
 
 	internal sealed class IntrinioHelper
 	{
-		private const string BaseURL = @"http://api.intrinio.com/";
-		private const string CompanyRoute = "companies";
-		private const string SecurityRoute = "securities";
-		private const string IndexRoute = "indices";
-		private const string OwnerRoute = "owners";
-		private const string ExchangeRoute = "stock_exchanges";
-
 		private string Username { get; }
 		private string Password { get; }
 		private string WorkingDirectory { get; }
@@ -88,17 +80,6 @@
 			return reader;
 		}
 
-		private string GetTableName<T>()
-			where T : BaseAbstract
-		{
-			T instance = Activator.CreateInstance<T>();
-
-			if (instance == null)
-				throw new TypeLoadException($"Unable to retrieve information for {typeof(T)} as it does not appear to be an Intrinio related object.");
-
-			return instance.FullTableName;
-		}
-
 		private string BuildURL<T>(Dictionary<string, string> arguments = null)
 			where T : BaseAbstract
 		{
@@ -107,27 +88,199 @@
 			if (instance == null)
 				throw new TypeLoadException($"Unable to retrieve information for {typeof(T)} as it does not appear to be an Intrinio related object.");
 
-			DataType dataType = instance.DataType;
+			IntrinioDataType dataType = instance.DataType;
 			FileType fileType = instance.FileType;
 
 			string route;
 
 			switch (dataType)
 			{
-				case DataType.Company:
-					route = CompanyRoute;
+				case IntrinioDataType.Companies:
+					route = CompaniesRoute;
 					break;
-				case DataType.Security:
-					route = SecurityRoute;
+				case IntrinioDataType.Securities:
+					route = SecuritiesRoute;
 					break;
-				case DataType.Index:
-					route = IndexRoute;
+				case IntrinioDataType.Indices:
+					route = IndicesRoute;
 					break;
-				case DataType.Owner:
-					route = OwnerRoute;
+				case IntrinioDataType.Owners:
+					route = OwnersRoute;
 					break;
-				case DataType.StockExchange:
-					route = ExchangeRoute;
+				case IntrinioDataType.StockExchanges:
+					route = StockExchangesRoute;
+					break;
+				case IntrinioDataType.AccessLimits:
+					route = AccessLimitsRoute;
+					break;
+				case IntrinioDataType.CurrentLimits:
+					route = CurrentLimitsRoute;
+					break;
+				case IntrinioDataType.HistoricalLimits:
+					route = HistoricalLimitsRoute;
+					break;
+				case IntrinioDataType.SecuritiesSearch:
+					route = SecuritiesSearchRoute;
+					break;
+				case IntrinioDataType.DataPoint:
+					route = DataPointRoute;
+					break;
+				case IntrinioDataType.HistoricalData:
+					route = HistoricalDataRoute;
+					break;
+				case IntrinioDataType.Prices:
+					route = PricesRoute;
+					break;
+				case IntrinioDataType.ExchangePrices:
+					route = ExchangePricesRoute;
+					break;
+				case IntrinioDataType.LatestSECFilings:
+					route = FilingsRoute;
+					break;
+				case IntrinioDataType.CompanySECFilings:
+					route = CompanyFilingsRoute;
+					break;
+				case IntrinioDataType.CompanyNews:
+					route = NewsRoute;
+					break;
+				case IntrinioDataType.StandardizedFundamentals:
+					route = StandardizedFundamentalsRoute;
+					break;
+				case IntrinioDataType.StandardizedTagsAndLabels:
+					route = StandardizedTagsRoute;
+					break;
+				case IntrinioDataType.StandardizedFinancials:
+					route = StandarizedFinancialsRoute;
+					break;
+				case IntrinioDataType.AsReportedFundamentals:
+					route = AsReportedFundamentalsRoute;
+					break;
+				case IntrinioDataType.AsReportedXBRLTagsAndLabels:
+					route = AsReportedTagsRoute;
+					break;
+				case IntrinioDataType.AsReportedFinancials:
+					route = AsReportedFinancialsRoute;
+					break;
+				case IntrinioDataType.CreateValuation:
+					route = ValuationRoute;
+					break;
+				case IntrinioDataType.FetchValuation:
+					route = ValuationRouteTemplate;
+					break;
+				case IntrinioDataType.FetchValuationAssumptions:
+				case IntrinioDataType.ChangeValuationAssumptions:
+					route = ValuationAssumptionRouteTemplate;
+					break;
+				case IntrinioDataType.FetchValuationOutputs:
+					route = ValuationOutputsRouteTemplate;
+					break;
+				case IntrinioDataType.InsiderTransactionsByCompany:
+					route = CompanyInsiderTransactionsRoute;
+					break;
+				case IntrinioDataType.InsiderOwnershipByCompany:
+					route = CompanyInsiderOwnershipRoute;
+					break;
+				case IntrinioDataType.InsiderTransactionsByOwner:
+					route = OwnerInsiderTransactionsRoute;
+					break;
+				case IntrinioDataType.InsiderHoldingsByOwner:
+					route = OwnerInsiderHoldingsRoute;
+					break;
+				case IntrinioDataType.InstitutionalHoldingsByOwner:
+					route = OwnerInstitutionalHoldingsRoute;
+					break;
+				case IntrinioDataType.InstitutionalOwnersBySecurity:
+					route = SecurityInstitutionalOwnershipRoute;
+					break;
+				case IntrinioDataType.Banks:
+					route = BanksRoute;
+					break;
+				case IntrinioDataType.BankHoldingCompanies:
+					route = BankHoldingCompaniesRoute;
+					break;
+				case IntrinioDataType.BankBranches:
+					route = BankBranchesRoute;
+					break;
+				case IntrinioDataType.FailedBanks:
+					route = FailedBanksRoute;
+					break;
+				case IntrinioDataType.BankFundamentals:
+					route = BankFundamentalsRoute;
+					break;
+				case IntrinioDataType.BankXBRLTagsAndLabels:
+					route = BankTagsRoute;
+					break;
+				case IntrinioDataType.BankFinancials:
+					route = BankFinancialsRoute;
+					break;
+				case IntrinioDataType.SecurityCorporateActions:
+					route = SecurityCorporateActionsRoute;
+					break;
+				case IntrinioDataType.StockExchangeCorporateActions:
+					route = StockExchangeCorporateActionsRoute;
+					break;
+				case IntrinioDataType.SecuritiesSalesSuprises:
+					route = SecuritySalesSuprisesRoute;
+					break;
+				case IntrinioDataType.SecuritiesEPSSuprises:
+					route = SecurityEPSSuprisesRoute;
+					break;
+				case IntrinioDataType.Options:
+					route = OptionsRoute;
+					break;
+				case IntrinioDataType.OptionExpirations:
+					route = OptionExpirationsRoute;
+					break;
+				case IntrinioDataType.CurrentOptionPrices:
+					route = CurrentOptionPriceRoute;
+					break;
+				case IntrinioDataType.HistoricalOptionPrices:
+					route = HistoricalOptionPriceRoute;
+					break;
+				case IntrinioDataType.SecurityNewsSentiments:
+					route = NewsSentimentsRoute;
+					break;
+				case IntrinioDataType.SectorNewsSentiments:
+					route = NewsSectorSentiments;
+					break;
+				case IntrinioDataType.Bloggers:
+					route = BloggersRoute;
+					break;
+				case IntrinioDataType.Blogs:
+					route = BlogsRoute;
+					break;
+				case IntrinioDataType.BloggerRatings:
+					route = BloggerRatingsRoute;
+					break;
+				case IntrinioDataType.Analysts:
+					route = AnalystsRoute;
+					break;
+				case IntrinioDataType.AnalystFirms:
+					route = AnalystFirmsRoute;
+					break;
+				case IntrinioDataType.AnalystRatings:
+					route = AnalystRatingsRoute;
+					break;
+				case IntrinioDataType.PressReleases:
+					route = PressReleasesRoute;
+					break;
+				case IntrinioDataType.PressReleaseContent:
+					route = PressReleaseContentRoute;
+					break;
+				case IntrinioDataType.Executives:
+					route = ExecutivesRoute;
+					break;
+				case IntrinioDataType.ExecutiveDetails:
+					route = ExecutiveDetailsRoute;
+					break;
+				case IntrinioDataType.CompanyExecutiveContacts:
+					route = CompanyExecutiveContactsRoute;
+					break;
+				case IntrinioDataType.CompanyExecutiveCompensation:
+					route = ExecutiveCompensationsRoute;
+					break;
+				case IntrinioDataType.CompanyExecutiveRoles:
+					route = ExecutiveRolesRoute;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(dataType),
@@ -198,6 +351,49 @@
 			return request;
 		}
 
+		private IReadOnlyCollection<T> ProcessCSVResponse<T>(StreamReader stream)
+			where T : BaseAbstract
+		{
+			if (stream == null
+				|| stream.Peek() == -1)
+				return null;
+			//string[] columns = stream.ReadLine().Split(',');
+			//foreach (string column in columns)
+			//	Console.WriteLine(column);
+			CsvReader reader = GetCSVReader(stream);
+			IReadOnlyCollection<T> records = reader.GetRecords<T>()
+												   .ToArray();
+
+			return records;
+		}
+
+		private JsonResponse<T> ProcessJSONResponse<T>(StreamReader stream)
+			where T : BaseAbstract
+		{
+			string jsonString = stream.ReadToEnd();
+			//Console.WriteLine(jsonString);
+			JsonResponse<T> result = JsonConvert.DeserializeObject<JsonResponse<T>>(jsonString);
+
+			if (result?.Data != null)
+				return result;
+
+			T record = JsonConvert.DeserializeObject<T>(jsonString);
+			result = new JsonResponse<T>
+					 {
+						 ResultCount = 1,
+						 PageSize = 1,
+						 CurrentPage = 1,
+						 TotalPages = 1,
+						 APICallCredits = 1,
+						 Data = new[]
+								{
+									record
+								}
+					 };
+
+			return result;
+		}
+
 		private IReadOnlyCollection<T> ProcessResponse<T>(Dictionary<string, string> arguments = null)
 			where T : BaseAbstract
 		{
@@ -250,7 +446,8 @@
 
 										IReadOnlyCollection<T> responseRecords = ProcessCSVResponse<T>(stream);
 
-										if (responseRecords != null && responseRecords.Any())
+										if (responseRecords != null
+											&& responseRecords.Any())
 											records.AddRange(responseRecords);
 
 										if (results.ContainsKey("CURRENT_PAGE"))
@@ -306,47 +503,36 @@
 			return records;
 		}
 
-		private IReadOnlyCollection<T> ProcessCSVResponse<T>(StreamReader stream)
+		private IReadOnlyCollection<T> GetSQL<T>(Dictionary<string, string> arguments = null)
 			where T : BaseAbstract
 		{
-			if (stream == null
-				|| stream.Peek() == -1)
-				return null;
-			//string[] columns = stream.ReadLine().Split(',');
-			//foreach (string column in columns)
-			//	Console.WriteLine(column);
-			CsvReader reader = GetCSVReader(stream);
-			IReadOnlyCollection<T> records = reader.GetRecords<T>()
-												   .ToArray();
-
+			IntrinioDatabase db = new IntrinioDatabase();
+			IReadOnlyCollection<T> records = db.Set<T>()
+											   .ToArray();
 			return records;
 		}
 
-		private JsonResponse<T> ProcessJSONResponse<T>(StreamReader stream)
+		private IReadOnlyCollection<T> GetFile<T>(Dictionary<string, string> arguments = null)
 			where T : BaseAbstract
 		{
-			string jsonString = stream.ReadToEnd();
-			//Console.WriteLine(jsonString);
-			JsonResponse<T> result = JsonConvert.DeserializeObject<JsonResponse<T>>(jsonString);
+			// Retrieve collection from file
+			string filePath = BuildFilePath<T>(arguments);
+			FileInfo fileInfo = new FileInfo(filePath);
 
-			if (result?.Data != null)
-				return result;
+			if (!fileInfo.Exists)
+				return null;
 
-			T record = JsonConvert.DeserializeObject<T>(jsonString);
-			result = new JsonResponse<T>
-			{
-				ResultCount = 1,
-				PageSize = 1,
-				CurrentPage = 1,
-				TotalPages = 1,
-				APICallCredits = 1,
-				Data = new[]
-								{
-									record
-								}
-			};
+			string fileContents = File.ReadAllText(filePath);
+			IReadOnlyCollection<T> records = JsonConvert.DeserializeObject<IReadOnlyCollection<T>>(fileContents);
+			return records;
+		}
 
-			return result;
+		private IReadOnlyCollection<T> GetAPI<T>(Dictionary<string, string> arguments = null)
+			where T : BaseAbstract
+		{
+			// Retrieve from API
+			IReadOnlyCollection<T> results = ProcessResponse<T>(arguments);
+			return results;
 		}
 
 		public IReadOnlyCollection<T> Get<T>(Dictionary<string, string> arguments = null)
@@ -423,36 +609,105 @@
 			return records;
 		}
 
-		private IReadOnlyCollection<T> GetSQL<T>(Dictionary<string, string> arguments = null)
-			where T : BaseAbstract
-		{
-			IntrinioDatabase db = new IntrinioDatabase();
-			IReadOnlyCollection<T> records = db.Set<T>()
-											   .ToArray();
-			return records;
-		}
+		#region Route constants
+		private const string BaseURL = @"https://api.intrinio.com/";
+		private const string QUODDURL = @"https://www5.quodd.com/quoddsnap/c/intrinio/t/";
+		private const string AccessRoute = "access";
+		private const string AnalystsRoute = "analysts";
+		private const string AnalystFirmsRoute = "analyst_firms";
+		private const string AnalystRatingsRoute = "analyst_ratings";
+		private const string AssumptionsRoute = "assumptions";
+		private const string BanksRoute = "banks";
+		private const string BlogsRoute = "blogs";
+		private const string BloggerRatingsRoute = "blogger_ratings";
+		private const string BloggersRoute = "bloggers";
+		private const string BranchesRoute = "branches";
+		private const string CompaniesRoute = "companies";
+		private const string CompensationsRoute = "compensations";
+		private const string CorporateActionsRoute = "corporate_actions";
+		private const string CurrentRoute = "current";
+		private const string DataPointRoute = "data_point";
+		private const string DetailRoute = "detail";
+		private const string DetailsRoute = "details";
+		private const string EPSRoute = "eps";
+		private const string ExchangeRoute = "exchange";
+		private const string ExecutivesRoute = "executives";
+		private const string ExpirationsRoute = "expirations";
+		private const string FailedRoute = "failed";
+		private const string FilingsRoute = "filings";
+		private const string FinancialsRoute = "financials";
+		private const string FundamentalsRoute = "fundamentals";
+		private const string HistoricalRoute = "historical";
+		private const string HistoricalDataRoute = "historical_data";
+		private const string HoldingCompaniesRoute = "holding_companies";
+		private const string InsiderHoldingsRoute = "insider_holdings";
+		private const string InsiderOwnershipRoute = "insider_ownership";
+		private const string InsiderTransactionsRoute = "insider_transactions";
+		private const string InstitutionalHoldingsRoute = "institutional_holdings";
+		private const string InstitutionalOwnershipRoute = "institutional_ownership";
+		//private const string InstitutionalTransactionsRoute = "institutional_transactions";
+		private const string IndicesRoute = "indices";
+		private const string OutputsRoute = "outputs";
+		private const string NewsRoute = "news";
+		private const string NewsSentimentsRoute = "news_sentiments";
+		private const string NewsSectorSentiments = "news_sector_sentiments";
+		private const string OptionsRoute = "options";
+		private const string OwnersRoute = "owners";
+		private const string PressReleasesRoute = "press_releases";
+		private const string PricesRoute = "prices";
+		private const string RolesRoute = "roles";
+		private const string ReportedRoute = "reported";
+		private const string SearchRoute = "search";
+		private const string StandardizedRoute = "standardized";
+		private const string SalesRoute = "sales";
+		private const string SecuritiesRoute = "securities";
+		private const string StockExchangesRoute = "stock_exchanges";
+		private const string SuprisesRoute = "suprises";
+		private const string TagsRoute = "tags";
+		private const string TokenRoute = "token";
+		private const string UsageRoute = "usage";
+		private const string ValuationRoute = "valuation";
 
-		private IReadOnlyCollection<T> GetFile<T>(Dictionary<string, string> arguments = null)
-			where T : BaseAbstract
-		{
-			// Retrieve collection from file
-			string filePath = BuildFilePath<T>(arguments);
-			FileInfo fileInfo = new FileInfo(filePath);
+		private const string CompanyFilingsRoute = CompaniesRoute + "/" + FilingsRoute;
+		private const string StandarizedFinancialsRoute = FinancialsRoute + "/" + StandardizedRoute;
+		private const string AsReportedFundamentalsRoute = FundamentalsRoute + "/" + ReportedRoute;
+		private const string AsReportedTagsRoute = TagsRoute + "/" + ReportedRoute;
+		private const string AsReportedFinancialsRoute = FinancialsRoute + "/" + ReportedRoute;
+		private const string StandardizedFundamentalsRoute = FundamentalsRoute + "/" + StandardizedRoute;
+		private const string ExchangePricesRoute = PricesRoute + "/" + ExchangeRoute;
+		private const string StandardizedTagsRoute = TagsRoute + "/" + StandardizedRoute;
+		private const string AccessLimitsRoute = UsageRoute + "/" + AccessRoute;
+		private const string CurrentLimitsRoute = UsageRoute + "/" + CurrentRoute;
+		private const string HistoricalLimitsRoute = UsageRoute + "/" + HistoricalRoute;
+		private const string SecuritiesSearchRoute = SecuritiesRoute + "/" + SearchRoute;
+		private const string BankHoldingCompaniesRoute = BanksRoute + "/" + HoldingCompaniesRoute;
+		private const string BankBranchesRoute = BanksRoute + "/" + BranchesRoute;
+		private const string FailedBanksRoute = BanksRoute + "/" + FailedRoute;
+		private const string BankTagsRoute = TagsRoute + "/" + BanksRoute;
+		private const string BankFundamentalsRoute = FundamentalsRoute + "/" + BanksRoute;
+		private const string BankFinancialsRoute = FinancialsRoute + "/" + BanksRoute;
+		private const string SecurityCorporateActionsRoute = SecuritiesRoute + "/" + CorporateActionsRoute;
+		private const string StockExchangeCorporateActionsRoute = StockExchangesRoute + "/" + CorporateActionsRoute;
+		private const string SecuritySalesSuprisesRoute = SecuritiesRoute + "/" + SuprisesRoute + "/" + SalesRoute;
+		private const string SecurityEPSSuprisesRoute = SecuritiesRoute + "/" + SuprisesRoute + "/" + EPSRoute;
+		private const string OptionExpirationsRoute = OptionsRoute + "/" + ExpirationsRoute;
+		private const string CurrentOptionPriceRoute = OptionsRoute + "/" + CurrentRoute;
+		private const string HistoricalOptionPriceRoute = OptionsRoute + "/" + HistoricalRoute;
+		private const string PressReleaseContentRoute = PressReleasesRoute + "/" + DetailRoute;
+		private const string ExecutiveDetailsRoute = ExecutivesRoute + "/" + DetailsRoute;
+		private const string CompanyExecutiveContactsRoute = ExecutivesRoute + "/" + CompaniesRoute;
+		private const string ExecutiveCompensationsRoute = ExecutivesRoute + "/" + CompensationsRoute;
+		private const string ExecutiveRolesRoute = ExecutivesRoute + "/" + RolesRoute;
+		private const string ValuationRouteTemplate = ValuationRoute + "/{0}";
+		private const string ValuationAssumptionRouteTemplate = ValuationRoute + "/{0}/" + AssumptionsRoute;
+		private const string ValuationOutputsRouteTemplate = ValuationRoute + "/{0}/" + OutputsRoute;
+		private const string CompanyInsiderTransactionsRoute = CompaniesRoute + "/" + InsiderTransactionsRoute;
+		private const string CompanyInsiderOwnershipRoute = CompaniesRoute + "/" + InsiderOwnershipRoute;
+		private const string OwnerInsiderTransactionsRoute = OwnersRoute + "/" + InsiderTransactionsRoute;
+		private const string OwnerInsiderHoldingsRoute = OwnersRoute + "/" + InsiderHoldingsRoute;
+		private const string OwnerInstitutionalHoldingsRoute = OwnersRoute + "/" + InstitutionalHoldingsRoute;
+		private const string SecurityInstitutionalOwnershipRoute = SecuritiesRoute + "/" + InstitutionalOwnershipRoute;
 
-			if (!fileInfo.Exists)
-				return null;
-
-			string fileContents = File.ReadAllText(filePath);
-			IReadOnlyCollection<T> records = JsonConvert.DeserializeObject<IReadOnlyCollection<T>>(fileContents);
-			return records;
-		}
-
-		private IReadOnlyCollection<T> GetAPI<T>(Dictionary<string, string> arguments = null)
-			where T : BaseAbstract
-		{
-			// Retrieve from API
-			IReadOnlyCollection<T> results = ProcessResponse<T>(arguments);
-			return results;
-		}
+		#endregion Route Constants
 	}
 }

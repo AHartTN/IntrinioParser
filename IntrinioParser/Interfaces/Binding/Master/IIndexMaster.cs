@@ -12,5 +12,8 @@
 	{
 		string Symbol { get; set; }
 		string IndexName { get; set; }
+		string Country { get; set; }
+		string Continent { get; set; }
+		string IndexType { get; set; }
 	}
 }

@@ -22,7 +22,7 @@
 	{
 		internal OwnerMasterAbstract()
 		{
-			DataType = DataType.Owner;
+			DataType = IntrinioDataType.Owners;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Master";

@@ -22,7 +22,7 @@
 	{
 		internal StockExchangeMasterAbstract()
 		{
-			DataType = DataType.StockExchange;
+			DataType = IntrinioDataType.StockExchanges;
 			//FileType = FileType.CSV;
 			SchemaName = DataType.ToString();
 			TableName = "Master";

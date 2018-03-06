@@ -29,10 +29,8 @@
 
 			string queryString = "?";
 
-			IReadOnlyCollection<string> argStrings = (from argument in arguments
-													  let key = HttpUtility.UrlEncode(argument.Key)
-													  let value = HttpUtility.UrlEncode(argument.Value)
-													  select $"{key}={value}").ToArray();
+			IReadOnlyCollection<string> argStrings = arguments.Select(s => $"{HttpUtility.UrlEncode(s.Key)}={HttpUtility.UrlEncode(s.Value)}")
+															  .ToArray();
 
 			queryString = queryString
 						  + string.Join("&",
