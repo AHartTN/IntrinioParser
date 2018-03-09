@@ -44,8 +44,8 @@
 		BankFinancials,
 		SecurityCorporateActions,
 		StockExchangeCorporateActions,
-		SecuritiesSalesSuprises,
-		SecuritiesEPSSuprises,
+		SecuritiesSalesSurprises,
+		SecuritiesEPSSurprises,
 		Options,
 		OptionExpirations,
 		CurrentOptionPrices,
@@ -62,8 +62,8 @@
 		PressReleaseContent,
 		Executives,
 		ExecutiveDetails,
-		CompanyExecutiveContacts,
-		CompanyExecutiveCompensation,
-		CompanyExecutiveRoles
+		ExecutiveContacts,
+		ExecutiveCompensation,
+		ExecutiveRoles
 	}
 }

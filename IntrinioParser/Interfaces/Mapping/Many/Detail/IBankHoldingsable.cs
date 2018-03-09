@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IntrinioParser.Interfaces.Mapping.Many.Detail
+﻿namespace IntrinioParser.Interfaces.Mapping.Many.Detail
 {
-    internal interface IBankHoldingsable
-    {
-        ICollection<BankHolding> BankHoldings { get; set; }
-    }
+	#region
+	using System.Collections.Generic;
+
+	using Models.Binding.Detail;
+	#endregion
+
+	internal interface IBankHoldingsable
+	{
+		ICollection<BankHolding> BankHoldings { get; set; }
+	}
 }

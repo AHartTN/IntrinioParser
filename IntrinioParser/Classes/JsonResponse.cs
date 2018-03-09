@@ -2,7 +2,6 @@ namespace IntrinioParser.Classes
 {
 	#region
 	using System.Collections.Generic;
-	using System.Security;
 
 	using Abstract.Base;
 
@@ -14,8 +13,10 @@ namespace IntrinioParser.Classes
 	{
 		[JsonProperty("identifier")]
 		public string Identifier { get; set; }
+
 		[JsonProperty("item")]
 		public string Item { get; set; }
+
 		[JsonProperty("result_count")]
 		public int ResultCount { get; set; }
 

@@ -2,9 +2,6 @@
 {
 	#region
 	using System;
-	using System.ComponentModel.DataAnnotations.Schema;
-
-	using Attributes;
 
 	using Base;
 
@@ -30,69 +27,69 @@
 		}
 
 		#region Implementation of ISecurityMasterable
-		[ForeignKey("SecurityMaster")]
+		[JsonProperty("")]
 		public int SecurityMasterID { get; set; }
 
-		[Hidden]
-		public virtual SecurityMaster SecurityMaster { get; set; }
+		[JsonProperty("")]
+		public SecurityMaster SecurityMaster { get; set; }
 		#endregion
 
 		#region Implementation of ISecurity
-		[JsonProperty("ticker")]
+		[JsonProperty("")]
 		public string Ticker { get; set; }
 
-		[JsonProperty("figi_ticker")]
+		[JsonProperty("")]
 		public string FIGITicker { get; set; }
 
-		[JsonProperty("figi")]
+		[JsonProperty("")]
 		public string FIGI { get; set; }
 
-		[JsonProperty("security_name")]
+		[JsonProperty("")]
 		public string SecurityName { get; set; }
 
-		[JsonProperty("market_sector")]
+		[JsonProperty("")]
 		public string MarketSector { get; set; }
 
-		[JsonProperty("security_type")]
+		[JsonProperty("")]
 		public string SecurityType { get; set; }
 
-		[JsonProperty("stock_exchange")]
+		[JsonProperty("")]
 		public string StockExchange { get; set; }
 
-		[JsonProperty("last_crsp_adj_date")]
+		[JsonProperty("")]
 		public DateTime? LastCRSPAdjDate { get; set; }
 
-		[JsonProperty("composite_figi")]
+		[JsonProperty("")]
 		public string CompositeFIGI { get; set; }
 
-		[JsonProperty("composite_figi_ticker")]
+		[JsonProperty("")]
 		public string CompositeFIGITicker { get; set; }
 
-		[JsonProperty("figi_uniqueid")]
+		[JsonProperty("")]
 		public string FIGIUniqueID { get; set; }
 
-		[JsonProperty("share_class_figi")]
+		[JsonProperty("")]
 		public string ShareClassFIGI { get; set; }
 
-		[JsonProperty("figi_exch_cntry")]
+		[JsonProperty("")]
 		public string FIGIExchCntry { get; set; }
 
-		[JsonProperty("currency")]
+		[JsonProperty("")]
 		public string Currency { get; set; }
 
-		[JsonProperty("mic")]
+		[JsonProperty("")]
 		public string MIC { get; set; }
 
-		[JsonProperty("exch_symbol")]
+		[JsonProperty("")]
 		public string ExchSymbol { get; set; }
 
-		[JsonProperty("etf")]
+		[JsonProperty("")]
 		public bool? ETF { get; set; }
 
-		[JsonProperty("delisted_security")]
+		[JsonProperty("")]
 		public bool? DelistedSecurity { get; set; }
 
-		[JsonProperty("primary_listing")]
+		[JsonProperty("")]
 		public bool? PrimaryListing { get; set; }
 		#endregion
 	}

@@ -14,7 +14,6 @@
 	{
 		private static void Main(string[] args)
 		{
-
 			Dictionary<string, string> arguments = new Dictionary<string, string>
 												   {
 													   {"ticker", "MSFT"}

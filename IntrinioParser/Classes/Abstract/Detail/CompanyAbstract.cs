@@ -1,10 +1,6 @@
 ﻿namespace IntrinioParser.Classes.Abstract.Detail
 {
 	#region
-	using System.ComponentModel.DataAnnotations.Schema;
-
-	using Attributes;
-
 	using Base;
 
 	using Enumerators;
@@ -29,99 +25,96 @@
 		}
 
 		#region Implementation of ICompanyMasterable
-		[ForeignKey("CompanyMaster")]
 		public int CompanyMasterID { get; set; }
-
-		[Hidden]
-		public virtual CompanyMaster CompanyMaster { get; set; }
+		public CompanyMaster CompanyMaster { get; set; }
 		#endregion
 
 		#region Implementation of ICompany
-		[JsonProperty("ticker")]
+		[JsonProperty("")]
 		public string Ticker { get; set; }
 
-		[JsonProperty("cik")]
+		[JsonProperty("")]
 		public string CIK { get; set; }
 
-		[JsonProperty("name")]
+		[JsonProperty("")]
 		public string Name { get; set; }
 
-		[JsonProperty("legal_name")]
+		[JsonProperty("")]
 		public string LegalName { get; set; }
 
-		[JsonProperty("lei")]
+		[JsonProperty("")]
 		public string LEI { get; set; }
 
-		[JsonProperty("hq_address1")]
+		[JsonProperty("")]
 		public string HQAddress1 { get; set; }
 
-		[JsonProperty("hq_address2")]
+		[JsonProperty("")]
 		public string HQAddress2 { get; set; }
 
-		[JsonProperty("hq_address_city")]
+		[JsonProperty("")]
 		public string HQAddressCity { get; set; }
 
-		[JsonProperty("hq_address_postal_code")]
+		[JsonProperty("")]
 		public string HQAddressPostalCode { get; set; }
 
-		[JsonProperty("entity_legal_form")]
+		[JsonProperty("")]
 		public string EntityLegalForm { get; set; }
 
-		[JsonProperty("hq_state")]
+		[JsonProperty("")]
 		public string HQState { get; set; }
 
-		[JsonProperty("hq_country")]
+		[JsonProperty("")]
 		public string HQCountry { get; set; }
 
-		[JsonProperty("inc_state")]
+		[JsonProperty("")]
 		public string IncState { get; set; }
 
-		[JsonProperty("inc_country")]
+		[JsonProperty("")]
 		public string IncCountry { get; set; }
 
-		[JsonProperty("sic")]
+		[JsonProperty("")]
 		public string SIC { get; set; }
 
-		[JsonProperty("stock_exchange")]
+		[JsonProperty("")]
 		public string StockExchange { get; set; }
 
-		[JsonProperty("template")]
+		[JsonProperty("")]
 		public string Template { get; set; }
 
-		[JsonProperty("short_description")]
+		[JsonProperty("")]
 		public string ShortDescription { get; set; }
 
-		[JsonProperty("long_description")]
+		[JsonProperty("")]
 		public string LongDescription { get; set; }
 
-		[JsonProperty("ceo")]
+		[JsonProperty("")]
 		public string CEO { get; set; }
 
-		[JsonProperty("company_url")]
+		[JsonProperty("")]
 		public string CompanyURL { get; set; }
 
-		[JsonProperty("business_address")]
+		[JsonProperty("")]
 		public string BusinessAddress { get; set; }
 
-		[JsonProperty("mailing_address")]
+		[JsonProperty("")]
 		public string MailingAddress { get; set; }
 
-		[JsonProperty("business_phone_no")]
+		[JsonProperty("")]
 		public string BusinessPhoneNo { get; set; }
 
-		[JsonProperty("employees")]
+		[JsonProperty("")]
 		public int? Employees { get; set; }
 
-		[JsonProperty("sector")]
+		[JsonProperty("")]
 		public string Sector { get; set; }
 
-		[JsonProperty("industry_category")]
+		[JsonProperty("")]
 		public string IndustryCategory { get; set; }
 
-		[JsonProperty("industry_group")]
+		[JsonProperty("")]
 		public string IndustryGroup { get; set; }
 
-		[JsonProperty("standardized_active")]
+		[JsonProperty("")]
 		public bool? StandardizedActive { get; set; }
 		#endregion
 	}

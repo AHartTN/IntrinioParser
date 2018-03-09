@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IntrinioParser.Interfaces.Binding.Detail
+﻿namespace IntrinioParser.Interfaces.Binding.Detail
 {
-    using Base;
+	#region
+	using System.Collections.Generic;
 
-    internal interface IBankHolding : IBaseModel
-    {
-        int RSSDID { get; set; }
-        string Name { get; set; }
-        string City { get; set; }
-        string State { get; set; }
-        ICollection<Bank> Banks { get; set; }
-    }
+	using Base;
+
+	using Models.Binding.Detail;
+	#endregion
+
+	internal interface IBankHolding : IBaseModel
+	{
+		int RSSDID { get; set; }
+		string Name { get; set; }
+		string City { get; set; }
+		string State { get; set; }
+		ICollection<Bank> Banks { get; set; }
+	}
 }

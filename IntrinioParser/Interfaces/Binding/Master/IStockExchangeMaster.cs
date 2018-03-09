@@ -1,4 +1,4 @@
-﻿ namespace IntrinioParser.Interfaces.Binding.Master
+﻿namespace IntrinioParser.Interfaces.Binding.Master
 {
 	#region
 	using Base;

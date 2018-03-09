@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IntrinioParser.Interfaces.Binding.Detail
+﻿namespace IntrinioParser.Interfaces.Binding.Detail
 {
-    internal interface IBlogger : IExternal
-    {
-    }
+	#region
+	using Base;
+	#endregion
+
+	internal interface IBlogger : IExternal { }
 }

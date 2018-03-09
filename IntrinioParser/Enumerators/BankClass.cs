@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IntrinioParser.Enumerators
+﻿namespace IntrinioParser.Enumerators
 {
-    internal enum BankClass
-    {
-        N,
-        SM,
-        NM,
-        SA,
-        OI
-    }
+	internal enum BankClass
+	{
+		N,
+		SM,
+		NM,
+		SA,
+		OI
+	}
 }

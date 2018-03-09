@@ -1,8 +1,8 @@
 ﻿namespace IntrinioParser.Interfaces.Binding.Detail
 {
-    using Base;
+	#region
+	using Base;
+	#endregion
 
-    internal interface ISecuritySearch : IBaseModel
-    {
-    }
+	internal interface ISecuritySearch : IBaseModel { }
 }

@@ -3,8 +3,6 @@
 	#region
 	using System.Collections.Generic;
 
-	using Attributes;
-
 	using Base;
 
 	using Enumerators;
@@ -12,8 +10,6 @@
 	using Interfaces.Binding.Master;
 
 	using Models.Binding.Detail;
-
-	using Newtonsoft.Json;
 	#endregion
 
 	internal abstract class IndexMasterAbstract
@@ -30,16 +26,15 @@
 		}
 
 		#region Implementation of IIndicesable
-		[Hidden]
-		public virtual ICollection<Index> Indices { get; set; }
+		public ICollection<Index> Indices { get; set; }
 		#endregion
 
 		#region Implementation of IIndexMaster
-		[JsonProperty("symbol")]
 		public string Symbol { get; set; }
-
-		[JsonProperty("index_name")]
 		public string IndexName { get; set; }
+		public string Country { get; set; }
+		public string Continent { get; set; }
+		public string IndexType { get; set; }
 		#endregion
 	}
 }

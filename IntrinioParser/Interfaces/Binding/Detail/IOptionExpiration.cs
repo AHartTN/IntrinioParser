@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IntrinioParser.Interfaces.Binding.Detail
+﻿namespace IntrinioParser.Interfaces.Binding.Detail
 {
-    using Base;
-    internal interface IOptionExpiration : IBaseModel
-    {
-        ICollection<DateTime> Data { get; set; }
-    }
+	#region
+	using System;
+	using System.Collections.Generic;
+
+	using Base;
+	#endregion
+
+	internal interface IOptionExpiration : IBaseModel
+	{
+		ICollection<DateTime> Data { get; set; }
+	}
 }

@@ -9,7 +9,7 @@ namespace IntrinioParser.Models
 		internal static void Initialize(DbContext context)
 		{
 			context.Database.EnsureCreated();
-			
+
 			// Some kind of BS Check for seeded data
 			// If the check fails, seed some data
 		}

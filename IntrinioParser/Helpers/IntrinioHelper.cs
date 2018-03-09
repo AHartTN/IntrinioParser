@@ -219,11 +219,11 @@
 				case IntrinioDataType.StockExchangeCorporateActions:
 					route = StockExchangeCorporateActionsRoute;
 					break;
-				case IntrinioDataType.SecuritiesSalesSuprises:
-					route = SecuritySalesSuprisesRoute;
+				case IntrinioDataType.SecuritiesSalesSurprises:
+					route = SecuritySalesSurprisesRoute;
 					break;
-				case IntrinioDataType.SecuritiesEPSSuprises:
-					route = SecurityEPSSuprisesRoute;
+				case IntrinioDataType.SecuritiesEPSSurprises:
+					route = SecurityEPSSurprisesRoute;
 					break;
 				case IntrinioDataType.Options:
 					route = OptionsRoute;
@@ -273,13 +273,13 @@
 				case IntrinioDataType.ExecutiveDetails:
 					route = ExecutiveDetailsRoute;
 					break;
-				case IntrinioDataType.CompanyExecutiveContacts:
+				case IntrinioDataType.ExecutiveContacts:
 					route = CompanyExecutiveContactsRoute;
 					break;
-				case IntrinioDataType.CompanyExecutiveCompensation:
+				case IntrinioDataType.ExecutiveCompensation:
 					route = ExecutiveCompensationsRoute;
 					break;
-				case IntrinioDataType.CompanyExecutiveRoles:
+				case IntrinioDataType.ExecutiveRoles:
 					route = ExecutiveRolesRoute;
 					break;
 				default:
@@ -343,7 +343,7 @@
 		{
 			string url = BuildURL<T>(arguments);
 			Console.WriteLine(url);
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+			HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
 			request.Timeout = 60000;
 			request.Headers.Add("Authorization",
 								AuthString);
@@ -413,7 +413,7 @@
 			int currentPage = 1;
 			int totalPages = 1;
 
-			using (HttpWebResponse initialResponse = (HttpWebResponse)request.GetResponse())
+			using (HttpWebResponse initialResponse = (HttpWebResponse) request.GetResponse())
 			{
 				using (Stream responseStream = initialResponse.GetResponseStream())
 				{
@@ -474,7 +474,7 @@
 							case HttpStatusCode.NotFound: // Invalid path
 							case HttpStatusCode.InternalServerError: // Server Error
 							case HttpStatusCode.ServiceUnavailable: // Service Interruption or limit reached
-							case (HttpStatusCode)429: // Too many calls
+							case (HttpStatusCode) 429: // Too many calls
 								string errorResponse = stream.ReadToEnd();
 								throw new Exception(errorResponse);
 							default:
@@ -644,9 +644,12 @@
 		private const string InsiderOwnershipRoute = "insider_ownership";
 		private const string InsiderTransactionsRoute = "insider_transactions";
 		private const string InstitutionalHoldingsRoute = "institutional_holdings";
+
 		private const string InstitutionalOwnershipRoute = "institutional_ownership";
+
 		//private const string InstitutionalTransactionsRoute = "institutional_transactions";
 		private const string IndicesRoute = "indices";
+
 		private const string OutputsRoute = "outputs";
 		private const string NewsRoute = "news";
 		private const string NewsSentimentsRoute = "news_sentiments";
@@ -662,7 +665,7 @@
 		private const string SalesRoute = "sales";
 		private const string SecuritiesRoute = "securities";
 		private const string StockExchangesRoute = "stock_exchanges";
-		private const string SuprisesRoute = "suprises";
+		private const string SurprisesRoute = "surprises";
 		private const string TagsRoute = "tags";
 		private const string TokenRoute = "token";
 		private const string UsageRoute = "usage";
@@ -688,8 +691,8 @@
 		private const string BankFinancialsRoute = FinancialsRoute + "/" + BanksRoute;
 		private const string SecurityCorporateActionsRoute = SecuritiesRoute + "/" + CorporateActionsRoute;
 		private const string StockExchangeCorporateActionsRoute = StockExchangesRoute + "/" + CorporateActionsRoute;
-		private const string SecuritySalesSuprisesRoute = SecuritiesRoute + "/" + SuprisesRoute + "/" + SalesRoute;
-		private const string SecurityEPSSuprisesRoute = SecuritiesRoute + "/" + SuprisesRoute + "/" + EPSRoute;
+		private const string SecuritySalesSurprisesRoute = SecuritiesRoute + "/" + SurprisesRoute + "/" + SalesRoute;
+		private const string SecurityEPSSurprisesRoute = SecuritiesRoute + "/" + SurprisesRoute + "/" + EPSRoute;
 		private const string OptionExpirationsRoute = OptionsRoute + "/" + ExpirationsRoute;
 		private const string CurrentOptionPriceRoute = OptionsRoute + "/" + CurrentRoute;
 		private const string HistoricalOptionPriceRoute = OptionsRoute + "/" + HistoricalRoute;
@@ -707,7 +710,6 @@
 		private const string OwnerInsiderHoldingsRoute = OwnersRoute + "/" + InsiderHoldingsRoute;
 		private const string OwnerInstitutionalHoldingsRoute = OwnersRoute + "/" + InstitutionalHoldingsRoute;
 		private const string SecurityInstitutionalOwnershipRoute = SecuritiesRoute + "/" + InstitutionalOwnershipRoute;
-
 		#endregion Route Constants
 	}
 }

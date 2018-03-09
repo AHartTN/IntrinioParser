@@ -1,10 +1,6 @@
 ﻿namespace IntrinioParser.Classes.Abstract.Detail
 {
 	#region
-	using System.ComponentModel.DataAnnotations.Schema;
-
-	using Attributes;
-
 	using Base;
 
 	using Enumerators;
@@ -29,60 +25,57 @@
 		}
 
 		#region Implementation of IIndexMasterable
-		[ForeignKey("IndexMaster")]
 		public int IndexMasterID { get; set; }
-
-		[Hidden]
-		public virtual IndexMaster IndexMaster { get; set; }
+		public IndexMaster IndexMaster { get; set; }
 		#endregion
 
 		#region Implementation of IIndex
-		[JsonProperty("symbol")]
+		[JsonProperty("")]
 		public string Symbol { get; set; }
 
-		[JsonProperty("index_name")]
+		[JsonProperty("")]
 		public string IndexName { get; set; }
 
-		[JsonProperty("index_type")]
+		[JsonProperty("")]
 		public string IndexType { get; set; }
 
-		[JsonProperty("continent")]
+		[JsonProperty("")]
 		public string Continent { get; set; }
 
-		[JsonProperty("country")]
+		[JsonProperty("")]
 		public string Country { get; set; }
 
-		[JsonProperty("description")]
-		public string Description { get; set; }
-
-		[JsonProperty("fred_symbol")]
+		[JsonProperty("")]
 		public string FredSymbol { get; set; }
 
-		[JsonProperty("update_frequency")]
+		[JsonProperty("")]
+		public string Description { get; set; }
+
+		[JsonProperty("")]
 		public string UpdateFrequency { get; set; }
 
-		[JsonProperty("last_updated")]
+		[JsonProperty("")]
 		public string LastUpdated { get; set; }
 
-		[JsonProperty("observation_start")]
+		[JsonProperty("")]
 		public string ObservationStart { get; set; }
 
-		[JsonProperty("observation_end")]
+		[JsonProperty("")]
 		public string ObservationEnd { get; set; }
 
-		[JsonProperty("popularity")]
+		[JsonProperty("")]
 		public string Popularity { get; set; }
 
-		[JsonProperty("seasonal_adjustment")]
+		[JsonProperty("")]
 		public string SeasonalAdjustment { get; set; }
 
-		[JsonProperty("seasonal_adjustment_short")]
+		[JsonProperty("")]
 		public string SeasonalAdjustmentShort { get; set; }
 
-		[JsonProperty("units")]
+		[JsonProperty("")]
 		public string Units { get; set; }
 
-		[JsonProperty("units_short")]
+		[JsonProperty("")]
 		public string UnitsShort { get; set; }
 		#endregion
 	}
